@@ -63,4 +63,19 @@ Again, this is not totally accurate, but this should give you an idea as to why 
 
 Okay, let's do some coding! We're going to be making an MLP neural network in Keras, and doing hyperparameter grid search. We aren't going to be doing pre-processing today, but we will in the next homework.
 
-###
+### Defining the neural network
+
+For people who have coded in Keras before, this may be a little different. We'll be wrapping our model into a function because of the hyperparameter grid search. As you may know, this is not necessary normally (though recommended). The code may also be a little different from what you may already be doing.
+
+#### Imports
+
+Let's import what we need
+
+#### Dataset
+
+We'll be using MNIST for our dataset. This is similar to homework 2, where the dataset is downloaded through the code itself (meaning you do not need to provide your own images or dataset).
+
+
+### Doing hyperparameter grid search
+
+We'll be using Talos for our grid search.
