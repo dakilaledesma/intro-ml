@@ -57,7 +57,7 @@ Unprocessed | Sigmoided
 
 ** <sub> Do NOT @ me about my legs </sub>
 
-Again, this is not totally accurate, but this should give you an idea as to why you wouldn't want to sigmoid this sequential data. You wouldn't want to push the x-values of the data to its extremities, as this could cause very unnatural movement (as seen above). Whilst pushing data closer to a step function is helpful for categorization/classification of data, it is not always helpful for sequential data. 
+Again, this is not totally accurate, but this should give you an idea as to why you wouldn't want to sigmoid for this motion data. You wouldn't want to push the x-values of the data to its extremities, because if your goal is to generate natural walking data, then sigmoiding your data is like giving your neural network bad data to learn from, degrading the performance. Whilst pushing data closer to a step function is helpful for categorization/classification of data, it is not always helpful for sequential data. 
 
 ## Part 3: Homework Tutorial
 
