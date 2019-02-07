@@ -55,6 +55,6 @@ Unprocessed | Sigmoided
 ------------ | -------------
 ![norm](https://i.imgur.com/HTLcaSJ.gif) | ![img1](https://i.imgur.com/6TWh0QF.gif)
 
-** <sub> Again, not totally accurate but gives you an idea as to why you wouldn't want to do this </sub>
+** <sub> Do NOT @ me about my legs </sub>
 
-^ <sub> You may not @ me about my legs </sub>
+Again, this is not totally accurate, but this should give you an idea as to why you wouldn't want to sigmoid this sequential data.
