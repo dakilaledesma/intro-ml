@@ -49,8 +49,11 @@ As you can see, the pixels that are already very dark change value a lot, but th
 
 Using sigmoids is good in this scenario, but you do not always want to do this. If you’re not predicting classifications but rather regressions, using sigmoids may actually cause your model perform worse.
 
-For example, sigmoids may not be a wise choice for sequence data. Take my research that focuses on human motion data. If I pass the cartesian coordinate x into a sigmoid, I may get something like this:
+For example, sigmoids may not be a wise choice for sequence data. Take my research that focuses on human motion data. If I pass the cartesian coordinate x into a sigmoid, I may get something like this*^:
 
 Unprocessed | Sigmoided
 ------------ | -------------
 ![norm](https://i.imgur.com/HTLcaSJ.gif) | ![img1](https://i.imgur.com/6TWh0QF.gif)
+
+* <sub> Again, not totally accurate but gives you an idea as to why you wouldn't want to do this </sub>
+^ <sub> You may not @ me about my legs </sub>
