@@ -41,8 +41,6 @@ For example, a look at the sigmoid activation function below. It is apparent tha
 
 When using this in a classification neural network, where you’re trying to output categories of data, this is great! This looks like a smooth step-function, and when data is passed through this activation function, data in the middle gets pushed closer to the extremities, in this case closer to 1 or 0. This makes the data less ambiguous when categorizing, for example.
 
-
-
 You can kind of visualize what a sigmoid does to data through these images*:
 
 *Note: Not completely accurate, but is used as a visual analogy of what sigmoid does to a data.
@@ -52,4 +50,7 @@ As you can see, the pixels that are already very dark change value a lot, but th
 Using sigmoids is good in this scenario, but you do not always want to do this. If you’re not predicting classifications but rather regressions, using sigmoids may actually cause your model perform worse.
 
 For example, sigmoids may not be a wise choice for sequence data. Take my research that focuses on human motion data. If I pass the cartesian coordinate x into a sigmoid, I may get something like this:
-![norm](https://i.imgur.com/Xqqmdxz.gif)
+
+Unprocessed | Sigmoided
+------------ | -------------
+![norm](https://i.imgur.com/HTLcaSJ.gif) | ![img1](https://i.imgur.com/6TWh0QF.gif)
