@@ -49,7 +49,7 @@ As you can see, the pixels that are already very dark change value a lot, but th
 
 Using sigmoids is good in this scenario, but you do not always want to do this. If you’re not predicting classifications but rather regressions, using sigmoids may actually cause your model perform worse.
 
-For example, sigmoids may not be a wise choice for sequence data. Take my research that focuses on human motion data. If I pass the cartesian coordinate x into a sigmoid, I may get something like this**^:
+For example, sigmoids may not be a wise choice for sequence data. Take my research that focuses on human motion data. If I pass the cartesian coordinate x into a sigmoid, I may get something like this**:
 
 Unprocessed | Sigmoided
 ------------ | -------------
@@ -57,4 +57,10 @@ Unprocessed | Sigmoided
 
 ** <sub> Do NOT @ me about my legs </sub>
 
-Again, this is not totally accurate, but this should give you an idea as to why you wouldn't want to sigmoid this sequential data.
+Again, this is not totally accurate, but this should give you an idea as to why you wouldn't want to sigmoid this sequential data. You wouldn't want to push the x-values of the data to its extremities, as this could cause very unnatural movement (as seen above). Whilst pushing data closer to a step function is helpful for categorization/classification of data, it is not always helpful for sequential data. 
+
+## Part 3: Homework Tutorial
+
+Okay, let's do some coding! We're going to be making an MLP neural network in Keras, and doing hyperparameter grid search. We aren't going to be doing pre-processing today, but we will in the next homework.
+
+###
