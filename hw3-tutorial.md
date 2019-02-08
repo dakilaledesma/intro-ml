@@ -63,7 +63,7 @@ Take my one of my research projects that focuses on human motion data. Let's ass
 
 <sub> Note: Do not @ me about my legs or leg day </sub>
 
-Again, this is not really accurate to what would actually happen to the data, but hopefully this is a good enough example as to why you wouldn't want to use something like a sigmoid for this type of data. You're not trying to classify between two things when generating a sequence of motion data. In "sigmoid" GIF, you may notice how my foot motion ends up on either the very left or the very right most of the time, but motion in the middle is quick, almost non-existent. As you can see, the "sigmoid" motion looks a lot less natural than the unprocessed/"linear" version. If your goal is to generate natural walking data, then applying this kind of activation function to your data is like giving your neural network bad information to learn from, degrading the performance. 
+Again, this is not really accurate to what would actually happen to the data, but hopefully this is a good enough example as to why you wouldn't want to use something like a sigmoid for this type of data. In the "sigmoid" GIF, you may notice how my foot motion ends up on either the very left or the very right most of the time, but motion in the middle is almost non-existent, making the movement unnatural for walking. If your goal is to generate natural walking data, then applying this kind of activation function to your data is like giving your neural network bad information to learn with, and you'll find that the performance will be quite horrible. Think of it as trying to write Chinese when all you've been given to learn from is the alphabetical system.
 
 ## Part 3: Homework Tutorial
 
