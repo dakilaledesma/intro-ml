@@ -209,9 +209,9 @@ We've discussed a few hyperparamters in the previous section, namely:
 
 And for each, there are many choices. Let's say you don't have any intuition for what activation function between softmax, sigmoid, and ReLU will perform best on your dataset. What you can do is a hyperparameter grid search. This is an automated way of trying every combination of loss, optimizer, # units, etc. that you specify. 
 
-Lets instantiate a dictionary *p* that contains the hyperparameters that we want to be testing:
+Lets instantiate a dictionary *param_dict* that contains the hyperparameters that we want to be testing:
 ```python
-p = {
+param_dict = {
     'units': [12, 24],
     'activation': ['softmax', 'sigmoid'],
     'loss': ['mse', 'binary_crossentropy'],
@@ -247,7 +247,7 @@ We can paste the code from what we have earlier inside this function, however, w
                         verbose=0)
     return out, model
 ```
-As you can see, we are changing these hyperparameters into ones that call from p dictionary:
+As you can see, we are changing these hyperparameters in the model into ones that call from param_dict dictionary:
 * Units of all layers but the last
 * Activation
 * Loss
@@ -257,6 +257,6 @@ As you can see, we are changing these hyperparameters into ones that call from p
 Now that we have the model wrapped in a function, we can call the Talos function to run the hyperparameter grid search, namely Scan().
 
 ```python
-talos.Scan(x_train, y_train, p, my_model)
+talos.Scan(x_train, y_train, param_dict, my_model)
 ```
 
