@@ -189,7 +189,7 @@ We've built the neural network! Your code finished should look something like th
 ```python
 model = Sequential()
 model.add(Flatten(input_shape=(28, 28, 1)))
-model.add(Dense(params['first_neuron'], activation=params['activation']))
+model.add(Dense(units=24, activation='softmax'))
 model.add(Dense(units=10, activation='softmax'))
 
 model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
@@ -200,45 +200,63 @@ Running this code should entail your neural network training on the MNIST datase
 
 ### Doing hyperparameter grid search
 We've discussed a few hyperparamters in the previous section, namely:
-* number of units
+* Number of units
 * Activation function
 * Loss
 * Optimizer
 * Batch Size
-* number of epochs
+* Number of epochs
 
 And for each, there are many choices. Let's say you don't have any intuition for what activation function between softmax, sigmoid, and ReLU will perform best on your dataset. What you can do is a hyperparameter grid search. This is an automated way of trying every combination of loss, optimizer, # units, etc. that you specify. 
 
+Lets instantiate a dictionary *p* that contains the hyperparameters that we want to be testing:
 ```python
 p = {
-    'first_neuron': [12, 24],
-    'activation': ['softmax', 'sigmoid', 'relu'],
-    'loss': ['mse', 'mae', 'binary_crossentropy']
-    'optimizer': ['adam', 'adagrad']
+    'units': [12, 24],
+    'activation': ['softmax', 'sigmoid'],
+    'loss': ['mse', 'binary_crossentropy'],
+    'optimizer': ['adam', 'adagrad'],
+    'batch_size': [1000, 2000]
 }
 ```
 
-As you can see, we set first_neuron number, activation, loss, and optimizer params. This gives us 2 x 3 x 3 x 2 = 36 different combinations of these hyperparamters.
+As you can see, we set first_neuron number, activation, loss, and optimizer params. This gives us 2 x 2 x 2 x 2 = 16 different combinations of these hyperparamters.
 
-Now, let's wrap our model in a function:
+Now, let's wrap our model in a function. We'll be implementing these explicit parameters, and be returning both the model and "out," both variables that Talos needs.
+
 ```python
 def my_model(x_train, y_train, x_val, y_val, params):
+```
 
+We can paste the code from what we have earlier inside this function, however, we'll be making some changes. We'll be changing the hyperparameters from before to be able to intake parameters passed in by Talos. Thus, we'll be using the index of our params implicit parameter in order to set the hyperparameters.
+
+```python
     model = Sequential()
     model.add(Flatten(input_shape=(28, 28, 1)))
-    model.add(Dense(params['first_neuron'], activation=params['activation']))
-    model.add(Dense(units=10, activation='softmax'))
-
-    model.compile(loss='mse',
-                  optimizer='adam',
+    
+    model.add(Dense(units=params['units']))
+    model.add(Dense(units=10, activation=params['activation']))
+    model.compile(loss=params['loss'],
+                  optimizer=params['optimizer'],
                   metrics=['accuracy'])
 
     out = model.fit(x_train, y_train,
                         validation_data=[x_test, y_test],
-                        batch_size=2000,
+                        batch_size=params['batch_size'],
                         epochs=100,
                         verbose=0)
-
-    # finally we have to make sure that history object and model are returned
     return out, model
 ```
+As you can see, we are changing these hyperparameters into ones that call from p dictionary:
+* Units of all layers but the last
+* Activation
+* Loss
+* Optimizer
+* Batch size
+
+Now that we have the model wrapped in a function, we can call the Talos function to run the hyperparameter grid search, namely Scan().
+
+```python
+talos.Scan(x_train, y_train, p, my_model)
+```
+
