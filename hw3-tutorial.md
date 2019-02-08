@@ -200,12 +200,12 @@ Running this code should entail your neural network training on the MNIST datase
 
 ### Doing hyperparameter grid search
 We've discussed a few hyperparamters in the previous section, namely:
-* # of units
+* number of units
 * Activation function
 * Loss
 * Optimizer
 * Batch Size
-* # of epochs
+* number of epochs
 
 And for each, there are many choices. Let's say you don't have any intuition for what activation function between softmax, sigmoid, and ReLU will perform best on your dataset. What you can do is a hyperparameter grid search. This is an automated way of trying every combination of loss, optimizer, # units, etc. that you specify. 
 
