@@ -352,3 +352,5 @@ r.plot_hist()
 Running this code in a notebook, you should be able to see the different combinations of hyperparameters and their respective validation accuracy (val_acc):
 
 ![table](https://i.imgur.com/2iL33qP.png)
+
+So, we've made a Dense network and did some hyperparameter grid search, and now we're done!
