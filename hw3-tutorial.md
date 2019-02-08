@@ -55,13 +55,13 @@ Using sigmoids is good in this scenario, but you do not always want to do this. 
 
 Take my one of my research projects that focuses on human motion data. Let's assume that in the GIFs you see below, the pixels from the left to right represent some x-values. We are then taking the x-values of my foot and putting it through a hypothetical sigmoid**:
 
-Unprocessed | Sigmoided
+"Linear" Activation | "Sigmoid" Activation
 ------------ | -------------
 ![norm](https://i.imgur.com/HTLcaSJ.gif) | ![sig](https://i.imgur.com/6TWh0QF.gif)
 
 <sub> ** Do not @ me about my legs or leg day </sub>
 
-Again, this is not really accurate to what would actually happen, but hopefully this would give you an idea as to why you wouldn't want to use something like a sigmoid for this motion data. You're not trying to classify between two things. In this video, I highlight how my foot ends up on either the very left or the very right most of the time, but time in the middle is very little. As you can see, this doesn't look very natural and nobody walks like this (or at least no one should). If your goal is to generate natural walking data, then applying this kind of activation function to your data is like giving your neural network bad information to learn from, degrading the performance. Whilst pushing data closer to a step function is helpful for binary categorization/classification of data, it is not helpful for walking data. 
+Again, this is not really accurate to what would actually happen, but hopefully this would give you an idea as to why you wouldn't want to use something like a sigmoid for this motion data. You're not trying to classify between two things. In this video, I highlight how my foot ends up on either the very left or the very right most of the time, but time in the middle is very little. As you can see, the sigmoided motion looks a lot less natural than the unprocessed version. If your goal is to generate natural walking data, then applying this kind of activation function to your data is like giving your neural network bad information to learn from, degrading the performance. Whilst pushing data closer to a step function is helpful for binary categorization/classification of data, it is not helpful for walking data. 
 
 ## Part 3: Homework Tutorial
 
