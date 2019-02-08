@@ -156,7 +156,7 @@ Inside our Flatten(), we add input_shape. input_shape is a parameter you need to
 
 Other layers found in Keras, such as Conv2D, can take a 3D array (2D for the row x column, 1D for the values). I will explain that more in-depth in the next homework. 
 
-Now, let's add the Dense layers:
+Now, let's add the Dense layers. Note that for every add() in a sequential model represents another layer in the neural network, with the last layer added being the output layer, and the first layer added being the input layer.
 
 ```python
 model.add(Dense(units=24, activation='softmax'))
@@ -165,6 +165,8 @@ model.add(Dense(units=10, activation='softmax'))
 Where:
 * Units represents the amount of neurons per layer
 * Activation represents the activation function used in that layer
+
+**Keep in mind that the last layer you add is your output layer. Therefore, it should have the same number of neurons to the output shape that you need.** For example, we are training on digits from 0-9, giving us 10 different categories. This is the reason why the last layer we add has 10 neurons/units.
 
 After adding all of your desired layers, let's compile the model using model.compile().
 ```python
@@ -220,7 +222,7 @@ param_dict = {
 }
 ```
 
-As you can see, we set first_neuron number, activation, loss, and optimizer params. This gives us 2 x 2 x 2 x 2 = 16 different combinations of these hyperparamters.
+As you can see, we set units number, activation, loss, and optimizer params. This gives us 2 x 2 x 2 x 2 = 16 different combinations of these hyperparamters.
 
 Now, let's wrap our model in a function. We'll be implementing these explicit parameters, and be returning both the model and "out," both variables that Talos needs.
 
@@ -254,11 +256,12 @@ As you can see, we are changing these hyperparameters in the model into ones tha
 * Optimizer
 * Batch size
 
-Now that we have the model wrapped in a function, we can call the Talos function to run the hyperparameter grid search, namely Scan().
+Now that we have the model wrapped in a function, we can call the Talos function to run the hyperparameter grid search, namely Scan(). Note that Scan() will not print anything when it is done. Instead, it will generate a .csv file in your working directory.
 
 ```python
 talos.Scan(x_train, y_train, param_dict, my_model)
 ```
+
 Finally, your hyperparameter grid search code should look like this:
 ```python
 import sys
@@ -325,13 +328,13 @@ def my_model(x_train, y_train, x_val, y_val, params):
                     verbose=0)
     return out, model
 
-
+# Will not output anything but will create a .csv file when done.
 talos.Scan(x_train, y_train, p, my_model)
 ```
 Go ahead and run that code to train it! **Note: if you want to see the per-epoch updates like in the previous homework, change verbose in model.fit() from 0 to 1**
 
-#### Viewing the performance
-As you can see, the Scan() function creates a .csv file that stores all of the data. Now, we can move into a Jupyter notebook (sorry but you will have to), and run a Jupyter notebook using the following code (change 'yourfile.csv' to the name of your .csv file):
+#### Viewing the .csv
+As you may have noticed, after Scan() runs, it generates a '.csv' file found in your working directory. Now, we can open into a Jupyter notebook (if you're not in a jupyter notebook already), and run the following code (change 'yourfile.csv' to the name of your .csv file):
 
 ```python
 %matplotlib inline
@@ -342,4 +345,4 @@ r.plot_hist()
 ```
 Running this code in a notebook, you should be able to see the different combinations of hyperparameters and their respective validation accuracy (val_acc):
 
-![table](https://i.imgur.com/MqvqOpt.png)
+![table](https://i.imgur.com/2iL33qP.png)
