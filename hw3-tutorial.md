@@ -38,9 +38,11 @@ Some common hyperparameters you may encounter during coding:
 
 Why is this important? Depending on the hyperparameters you choose before even training your neural network may drastically improve (or degrade) the performance of your neural network. That being said, you should pick hyperparameters that make sense for the goal that you’re trying to achieve. This should go without saying, but sometimes this is not something completely intuitive to think about.
 
-For example, a look at the sigmoid activation function below. It is apparent that the steepness of the curve between -2 and 2 are much steeper relative to the steepness from -inf to 4, and 4 to inf.
+For example, a look at the sigmoid activation function below. It is apparent that the steepness of the curve between -2 and 2 are much steeper relative to the steepness from -6 to -4, and 4 to 6.
 
-When using this in binary classification, where you’re trying to output to -1 or 1, this is great! This looks like a smooth step-function, and when data is passed through this activation function, data in the middle having steep differences in value compared to the extremities, in this case closer to 1 or 0. This makes the data less ambiguous when categorizing, for example.
+![sigmoid](https://i.imgur.com/lN4ZskZ.png)
+
+When using this in binary classification, where you’re trying to output to -1 or 1, this is great! This looks like a smooth step-function, and when data is passed through this activation function, data in the middle will end up having steep differences in value compared to the extremities, in this case closer to 1 or 0. This makes the data less ambiguous when categorizing, for example.
 
 You can kind of visualize what a sigmoid does to data through these images**:
 
@@ -49,11 +51,11 @@ You can kind of visualize what a sigmoid does to data through these images**:
 
 <sub> ** Note: Not really accurate, but is used as a visual analogy. Image from http://ccis2k.org/iajit/PDF/vol.1,no.2/10-nagla.pdf </sub>
 
-As you can see, the pixels that are already very dark *don't* change value a lot, but the pixels within the image that are roughly halfway in the middle of black and white in the original image get pushed closer to the extremities (in this case, they turn whiter).
+You can think of it as the pixels that are already very dark *don't* change value a lot, but the pixels within the image that are roughly halfway in the middle of black and white in the original image get pushed closer to the extremities (in this case, they turn whiter).
 
 Using sigmoids is good in this scenario, but you do not always want to do this. If you’re not predicting binary classifications but rather regressions, using sigmoids doesn't make a lot of sense.
 
-Take my one of my research projects that focuses on human motion data. Let's assume that in the GIFs you see below, the pixels from the left to right represent some x-values. We are then taking the x-values of my foot and putting it through a hypothetical sigmoid:
+Take my one of my research projects that focuses on human motion data. Let's assume that in the GIFs you see below, the pixels from the left to right represent some x-values. We are then taking the x-values of my foot and putting it through a "sigmoid":
 
 "Linear" Activation | "Sigmoid" Activation
 ------------ | -------------
@@ -90,7 +92,6 @@ import talos
 import keras
 from keras import Sequential
 from keras.layers import Dense, Dropout, Flatten
-from keras.activations import sigmoid, softmax, relu, elu, linear
 from keras.datasets import mnist
 from keras import backend
 ```
@@ -124,17 +125,19 @@ y_test = keras.utils.to_categorical(y_test, 10)
 ```
 #### Building the neural network
 
+##### Making a model
+
 Now that we have our data, let's build a neural network using Keras. We're going to be making a serial model today, and the easiest way to do that in Keras is using Sequential().
 
-Sequential works in this manner:
-
-First, instantiate the model. We can call this easily as we've imported it above.
+First, instantiate the model. We can call the Sequential that we imported:
 
 ```python
 model = Sequential()
 ```
 
-Then, you can easily add layers to the model by calling model.add(). Some examples of layers are
+##### Adding layers
+
+Using Sequential, you can easily add layers to the model by calling model.add(). Some examples of layers are
 * Dense (the simplest type of layer, essentially a neuron with a weight, bias, and activation attached)
 * LSTM (classified as an recurrent neural layer with memory for temporal data)
 * Conv2D (classified as a convolutional neural layer, in which CNNs excel in spatial data)
@@ -167,6 +170,8 @@ Where:
 * Activation represents the activation function used in that layer
 
 **Keep in mind that the last layer you add is your output layer. Therefore, it should have the same number of neurons to the output shape that you need.** For example, we are training on digits from 0-9, giving us 10 different categories. This is the reason why the last layer we add has 10 neurons/units.
+
+##### Compiling and fitting your model
 
 After adding all of your desired layers, let's compile the model using model.compile().
 ```python
@@ -222,20 +227,22 @@ param_dict = {
 }
 ```
 
-As you can see, we set units number, activation, loss, and optimizer params. This gives us 2 x 2 x 2 x 2 = 16 different combinations of these hyperparamters.
+As you can see, we set units number, activation, loss, and optimizer params. This gives us 2 x 2 x 2 x 2 x 2 = 32 different combinations of these hyperparamters.
 
-Now, let's wrap our model in a function. We'll be implementing these explicit parameters, and be returning both the model and "out," both variables that Talos needs.
+Now, let's wrap our model in a function. We'll be implementing these explicit parameters, and be returning both the model and our fit function (stored in 'out' variable), both variables that Talos needs.
 
 ```python
 def my_model(x_train, y_train, x_val, y_val, params):
 ```
 
-We can paste the code from what we have earlier inside this function, however, we'll be making some changes. We'll be changing the hyperparameters from before to be able to intake parameters passed in by Talos. Thus, we'll be using the index of our params implicit parameter in order to set the hyperparameters.
+We can paste the code from what we have earlier inside this function, however, we'll be making some changes. We'll be changing the hyperparameters from before to be able to intake parameters passed in by Talos. Thus, we'll be using the index of our params implicit parameter in order to set the hyperparameters. Here is what your model inside a function should look like:
 
 ```python
+def my_model(x_train, y_train, x_val, y_val, params):
+
     model = Sequential()
     model.add(Flatten(input_shape=(28, 28, 1)))
-    
+
     model.add(Dense(units=params['units']))
     model.add(Dense(units=10, activation=params['activation']))
     model.compile(loss=params['loss'],
@@ -243,10 +250,10 @@ We can paste the code from what we have earlier inside this function, however, w
                   metrics=['accuracy'])
 
     out = model.fit(x_train, y_train,
-                        validation_data=[x_test, y_test],
-                        batch_size=params['batch_size'],
-                        epochs=100,
-                        verbose=0)
+                    validation_data=[x_val, y_val],
+                    batch_size=params['batch_size'],
+                    epochs=20,
+                    verbose=0)
     return out, model
 ```
 As you can see, we are changing these hyperparameters in the model into ones that call from param_dict dictionary:
@@ -269,7 +276,6 @@ import talos
 import keras
 from keras import Sequential
 from keras.layers import Dense, Dropout, Flatten
-from keras.activations import sigmoid, softmax, relu, elu, linear
 from keras.datasets import mnist
 from keras import backend
 
