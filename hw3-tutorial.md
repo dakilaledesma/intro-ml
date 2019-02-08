@@ -11,7 +11,7 @@ Let’s take a very simple example: I would like to create a machine learning al
 
 Now I would be able to just throw this exact image above into a model, telling the model “this is the leafy part of a strawberry." However, I can do a simple threshold of the image to only keep certain colors within the image, and get something like this:
 
-![thresholded strawberry leaf]https://i.imgur.com/rb9n4fM.png
+![thresholded strawberry leaf](https://i.imgur.com/rb9n4fM.png)
 
 As you can see, I’ve thresholded colors in a way that everything except the greens of the image are simply turned black. Let’s assume that through the feature extraction, what the neural network ends up “seeing” is the edges of the picture:
 
@@ -68,7 +68,7 @@ Again, this is not really accurate to what would actually happen to the data, bu
 Okay, let's do some coding! We're going to be making an MLP neural network in Keras, and doing hyperparameter grid search using Talos. We aren't going to be doing pre-processing to our data today, but we will in the next homework.
 
 ### Required library
-Before we start, please install talos. This is the library that we will be using in order to do hyperparameter grid search. It has a lot of features, such as plotting of neural network performance for each change of a hyperparamter. More information can be found here: ![Talos](https://github.com/autonomio/talos)
+Before we start, please install talos. This is the library that we will be using in order to do hyperparameter grid search. It has a lot of features, such as plotting of neural network performance for each change of a hyperparamter. More information can be found here: [Talos](https://github.com/autonomio/talos)
 
 Using Anaconda Prompt (Windows), or terminal (macOS or Linux), activate your python environment and type this to install this library to your python interpreter. If you're lost, you may refer to the machine setup guide where you do roughly the same thing.
 
@@ -219,3 +219,26 @@ p = {
 ```
 
 As you can see, we set first_neuron number, activation, loss, and optimizer params. This gives us 2 x 3 x 3 x 2 = 36 different combinations of these hyperparamters.
+
+Now, let's wrap our model in a function:
+```python
+def my_model(x_train, y_train, x_val, y_val, params):
+
+    model = Sequential()
+    model.add(Flatten(input_shape=(28, 28, 1)))
+    model.add(Dense(params['first_neuron'], activation=params['activation']))
+    model.add(Dense(units=10, activation='softmax'))
+
+    model.compile(loss='mse',
+                  optimizer='adam',
+                  metrics=['accuracy'])
+
+    out = model.fit(x_train, y_train,
+                        validation_data=[x_test, y_test],
+                        batch_size=2000,
+                        epochs=100,
+                        verbose=0)
+
+    # finally we have to make sure that history object and model are returned
+    return out, model
+```
