@@ -259,4 +259,87 @@ Now that we have the model wrapped in a function, we can call the Talos function
 ```python
 talos.Scan(x_train, y_train, param_dict, my_model)
 ```
+Finally, your hyperparameter grid search code should look like this:
+```python
+import sys
+import talos
+import keras
+from keras import Sequential
+from keras.layers import Dense, Dropout, Flatten
+from keras.activations import sigmoid, softmax, relu, elu, linear
+from keras.datasets import mnist
+from keras import backend
 
+p = {
+    'units': [12, 24],
+    'activation': ['softmax', 'sigmoid'],
+    'loss': ['mse', 'binary_crossentropy'],
+    'optimizer': ['adam', 'adagrad'],
+    'batch_size': [1000, 2000]
+}
+
+
+# input image dimensions
+img_rows, img_cols = 28, 28
+
+# the data, split between train and test sets
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+if backend.image_data_format() == 'channels_first':
+    x_train = x_train.reshape(x_train.shape[0], 1, img_rows, img_cols)
+    x_test = x_test.reshape(x_test.shape[0], 1, img_rows, img_cols)
+    input_shape = (1, img_rows, img_cols)
+else:
+    x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, 1)
+    x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, 1)
+    input_shape = (img_rows, img_cols, 1)
+
+x_train = x_train.astype('float32')
+x_test = x_test.astype('float32')
+x_train /= 255
+x_test /= 255
+print('x_train shape:', x_train.shape)
+print(x_train.shape[0], 'train samples')
+print(x_test.shape[0], 'test samples')
+
+# convert class vectors to binary class matrices
+y_train = keras.utils.to_categorical(y_train, 10)
+y_test = keras.utils.to_categorical(y_test, 10)
+
+
+def my_model(x_train, y_train, x_val, y_val, params):
+
+    model = Sequential()
+    model.add(Flatten(input_shape=(28, 28, 1)))
+
+    model.add(Dense(units=params['units']))
+    model.add(Dense(units=10, activation=params['activation']))
+    model.compile(loss=params['loss'],
+                  optimizer=params['optimizer'],
+                  metrics=['accuracy'])
+
+    out = model.fit(x_train, y_train,
+                    validation_data=[x_val, y_val],
+                    batch_size=params['batch_size'],
+                    epochs=20,
+                    verbose=0)
+    return out, model
+
+
+talos.Scan(x_train, y_train, p, my_model)
+```
+Go ahead and run that code to train it! **Note: if you want to see the per-epoch updates like in the previous homework, change verbose in model.fit() from 0 to 1**
+
+#### Viewing the performance
+As you can see, the Scan() function creates a .csv file that stores all of the data. Now, we can move into a Jupyter notebook (sorry but you will have to), and run a Jupyter notebook using the following code (change 'yourfile.csv' to the name of your .csv file):
+
+```python
+%matplotlib inline
+import talos
+import matplotlib.pyplot as plt
+r = talos.Reporting('yourfile.csv')
+r.plot_hist()
+```
+Running this code in a notebook, you should be able to see the different combinations of hyperparameters and their respective validation accuracy (val_acc):
+
+![table](https://i.imgur.com/MqvqOpt.png)
