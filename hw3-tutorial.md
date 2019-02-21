@@ -184,7 +184,7 @@ Where:
 
 Lastly, let's fit our training and testing data into the model we compiled using model.fit().
 ```python
-out = model.fit(X=x_train, y=y_train, batch_size=2000, epochs=100, verbose=0)
+out = model.fit(x=x_train, y=y_train, batch_size=2000, epochs=100, verbose=0)
 ```
 Where:
 * X represents training data
