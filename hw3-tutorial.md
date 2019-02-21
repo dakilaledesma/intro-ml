@@ -201,7 +201,7 @@ model.add(Dense(units=10, activation='softmax'))
 
 model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
 
-model.fit(X=x_train, y=y_train, batch_size=2000, epochs=100)
+model.fit(x=x_train, y=y_train, batch_size=2000, epochs=100)
 ```
 Running this code should entail your neural network training on the MNIST dataset.
 
