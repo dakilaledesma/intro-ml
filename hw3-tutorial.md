@@ -266,7 +266,7 @@ As you can see, we are changing these hyperparameters in the model into ones tha
 Now that we have the model wrapped in a function, we can call the Talos function to run the hyperparameter grid search, namely Scan(). Note that Scan() will not print anything when it is done. Instead, it will generate a .csv file in your working directory.
 
 ```python
-talos.Scan(x_train, y_train, param_dict, my_model)
+talos.Scan(x_train, y_train, param_dict, my_model, x_val=x_test, y_val=y_test)
 ```
 
 Finally, your hyperparameter grid search code should look like this:
@@ -335,7 +335,7 @@ def my_model(x_train, y_train, x_val, y_val, params):
     return out, model
 
 # Will not output anything but will create a .csv file when done.
-talos.Scan(x_train, y_train, p, my_model)
+talos.Scan(x_train, y_train, p, my_model, x_val=x_test, y_val=y_test)
 ```
 Go ahead and run that code to train it! **Note: if you want to see the per-epoch updates like in the previous homework, change verbose in model.fit() from 0 to 1**
 
