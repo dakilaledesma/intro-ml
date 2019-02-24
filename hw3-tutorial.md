@@ -347,7 +347,7 @@ As you may have noticed, after Scan() runs, it generates a '.csv' file found in 
 import talos
 import matplotlib.pyplot as plt
 r = talos.Reporting('yourfile.csv')
-r.plot_hist()
+r.table()
 ```
 Running this code in a notebook, you should be able to see the different combinations of hyperparameters and their respective validation accuracy (val_acc):
 
