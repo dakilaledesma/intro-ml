@@ -11,7 +11,12 @@ In this homework, in addition to our convolution layers (which will be explained
 Simply put, Dropout is a way to reduce overfitting by "dropping out" a random set of neurons during training. This means that the connections to certain neurons are multiplied by 0, rending the connection useless.
 
 #### Why does this work? 
-If say, a neural network is stuck within a local minima, it allows the neural network to escape that local minima in hopes that it will find another minima closer to the global minima.
+If say, a neural network is stuck within a local minima, it allows the neural network to escape that local minima in hopes that it will find another minima closer to the global minima. In a sense, this makes the input "noisy," when a layer passes it's data onto the next with dropout, an input may look closer to the image on the right rather than the left:
+
+![normal_mnist](https://i.imgur.com/2ayEHKT.png)
+![noisy_mnist](https://i.imgur.com/gnmrCLO.png)
+
+taken w/o permission from: https://cs.stanford.edu/people/karpathy/convnetjs/mnist.png & https://csc.lsu.edu/~saikat/n-mnist/
 
 ## Tutorial
 ### Pre-processing
