@@ -8,9 +8,8 @@ I encourage you to read the last homework's reading about pre-processing. It exp
 Generally, a supervised convolutional neural network comprises of one or more convolution layers added before a set of fully connected (Dense) layers for classification. Convolutions are in charge of taking features (feature extraction) and new representations of them in order to help the output. 
 
 ### How do convolutional neural networks work?
-Instead of re-writing everything that I know, here is a fantastic resource (with images) on how CNNs work. I highly encourage you to read this, as it has both a video and images to help you understand underlying details in neural networks
+Instead of re-writing everything that I know, here is a fantastic resource (with images) on how CNNs work. The following is both a video and text resource, so if you'd rather read (or vice versa) then you can choose whatever you'd prefer.
 https://brohrer.github.io/how_convolutional_neural_networks_work.html
-
 
 ### What does data look like when it propagates through the neural network?
 Probably the most helpful resource I can give you to visualize the effects of CNNs is just through this cool visualization:
