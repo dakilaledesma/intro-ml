@@ -4,6 +4,9 @@ In this assignment, I would not need to go into such detail with building a neur
 I encourage you to read the last homework's reading about pre-processing. It explains some basics as to why you'd want to pre-process your data.
 
 ## Short Reading
+### What is a convolutional neural network?
+Generally, a supervised convolutional neural network comprises of one or more convolution layers added before a set of fully connected (Dense) layers for classification. Convolutions are in charge of taking features (feature extraction) and new representations of them in order to help the output. 
+
 ### Dropout
 In this homework, in addition to our convolution layers (which will be explained below), we're going to be using a Dropout layer in addition to those convolution layers. 
 
@@ -67,4 +70,5 @@ Thanks to the lecture work done by Dr. Liang, I would hopefully not have to expl
 
 Probably the most helpful resource I can give you to visualize the effects of CNNs is just through this cool visualization:
 https://cs.stanford.edu/people/karpathy/convnetjs/demo/mnist.html
-I very much encourage you to look at the demo above, scrolling down into "network visualization"
+I very much encourage you to look at the demo above, scrolling down into "network visualization." This comes with many intuitions on how data propagates over a neural network.
+
