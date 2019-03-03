@@ -8,15 +8,18 @@ I encourage you to read the last homework's reading about pre-processing. It exp
 In this homework, in addition to our convolution layers (which will be explained below), we're going to be using a Dropout layer in addition to those convolution layers. 
 
 #### What is dropout? 
-Simply put, Dropout is a way to reduce overfitting by "dropping out" a random set of neurons during training. This means that the connections to certain neurons are multiplied by 0, rending the connection useless.
+Simply put, Dropout is a way to reduce overfitting by "dropping out" a random set of neurons during training. This means that the connections to certain neurons are multiplied by 0, rending the connection for that epoch "useless."
 
 #### Why does this work? 
 If say, a neural network is stuck within a local minima, it allows the neural network to escape that local minima in hopes that it will find another minima closer to the global minima. In a sense, this makes the input "noisy," when a layer passes it's data onto the next with dropout, an input may look closer to the image on the right rather than the left:
 
+Without Dropout | With Dropout
+------------ | -------------
+![normal_mnist](https://i.imgur.com/2ayEHKT.png?1) | ![noisy_mnist](https://i.imgur.com/gnmrCLO.png)
 
-![noisy_mnist](https://i.imgur.com/gnmrCLO.png)
+<sub> taken w/o permission from: https://cs.stanford.edu/people/karpathy/convnetjs/mnist.png & https://csc.lsu.edu/~saikat/n-mnist/ </sub>
 
-taken w/o permission from: https://cs.stanford.edu/people/karpathy/convnetjs/mnist.png & https://csc.lsu.edu/~saikat/n-mnist/
+As you can see, the images are a lot noisier. The simplest benefit to Dropout is that it allows the model to become more tolerant of errors. Adding this artificial noise actually allows it to learn from "worse" but still representative data. For example, if you were training on cat images and some of your cat images are partially covered by another object, a dropout model would be more tolerant, and more accurate, then a model without dropout. This is one of the Dropout's biggest benefits against overfitting as well.
 
 ## Tutorial
 ### Pre-processing
@@ -28,8 +31,40 @@ Now, the question is how can we do something like this?
 
 Because we know that these images are basically turned into 3D arrays like in the last tutorial, where each MNIST digit image was just a 28 x 28 x 3 array per image, we can do this simply by setting certain pixels in the image to black, and retaining the green pixels that correspond to the strawberry leaf.
 
-Think of it this way:
-
-
 ### Convolutional Neural Networks
-Instead of using Dense layers, such as ones that you found in the previous homeworks, instead, we're going to be using convolution layers.
+Instead of using Dense layers, such as ones that you found in the previous homeworks, instead, we're going to be using convolution layers. Convolutions are much better in attaining features on spatial based input such as images.
+
+In fact, you have seen convolutional neural networks before: HW2 used a Keras example convnet in order to train on MNIST images. We can look at their code and decipher what they're doing
+
+```py
+
+model = Sequential()
+model.add(Conv2D(32, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=input_shape))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(num_classes, activation='softmax'))
+
+model.compile(loss=keras.losses.categorical_crossentropy,
+              optimizer=keras.optimizers.Adadelta(),
+              metrics=['accuracy'])
+
+model.fit(x_train, y_train,
+          batch_size=batch_size,
+          epochs=epochs,
+          verbose=1,
+          validation_data=(x_test, y_test))
+score = model.evaluate(x_test, y_test, verbose=0)
+
+```
+
+Thanks to the lecture work done by Dr. Liang, I would hopefully not have to explain a lot of these layers. However, there are some things that would be helpful for me to explain. Hopefully, the preceding code would look familiar to you in a sense. 
+
+Probably the most helpful resource I can give you to visualize the effects of CNNs is just through this cool visualization:
+https://cs.stanford.edu/people/karpathy/convnetjs/demo/mnist.html
+I very much encourage you to look at the demo above, scrolling down into "network visualization"
