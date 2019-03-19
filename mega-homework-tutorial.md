@@ -94,3 +94,7 @@ Much like what you have seen in class, a MaxPooling layer is also employed:
 ```py
 model.add(MaxPooling2D())
 ```
+
+# Recurrent Neural Networks
+The biggest difference between Recurrent NN compared to CNNs is that they have "memory" of the past. So in addition to the inputs that they're given, they're also able to assess how the previous inputs could potentially affect the outcome. For the most part, they're most effective on data that rely on sequences, the simplest examples being text/speech data.
+
