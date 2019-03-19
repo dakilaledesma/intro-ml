@@ -98,3 +98,9 @@ model.add(MaxPooling2D())
 # Recurrent Neural Networks
 The biggest difference between Recurrent NN compared to CNNs is that they have "memory" of the past. So in addition to the inputs that they're given, they're also able to assess how the previous inputs could potentially affect the outcome. For the most part, they're most effective on data that rely on sequences, the simplest examples being text/speech data.
 
+https://hackernoon.com/rnn-or-recurrent-neural-network-for-noobs-a9afbb00e860
+http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+
+# Generative Adversarial Networks 
+You will be using a GAN implementation for this homework.
+https://github.com/eriklindernoren/Keras-GAN/blob/master/gan/gan.py
