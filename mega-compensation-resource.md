@@ -1,7 +1,5 @@
-# Convolutional Neural Networks
-In this assignment, I would not need to go into such detail with building a neural network, as I've explained a lot of it in the previous homework.
-
-I encourage you to read the last homework's reading about pre-processing. It explains some basics as to why you'd want to pre-process your data.
+# Compensation Resource
+My deep apologies.
 
 ## Short Reading
 ### What is a convolutional neural network?
@@ -33,66 +31,34 @@ Without Dropout | With Dropout
 
 As you can see, the images are a lot noisier. The simplest benefit to Dropout is that it allows the model to become more tolerant of errors. Adding this artificial noise actually allows it to learn from "worse" but still representative data. For example, if you were training on cat images and some of your cat images are partially covered by another object, a dropout model would be more tolerant, and more accurate, then a model without dropout. This is one of the Dropout's biggest benefits against overfitting as well.
 
-## Tutorial
+## Tutorial Compensation
 ### Convolutional Neural Networks
 Instead of using Dense layers, such as ones that you found in the previous homeworks, instead, we're going to be using convolution layers. Convolutions are much better in attaining features on spatial based input such as images.
 
-In fact, you have seen convolutional neural networks before: HW2 used a Keras example convnet in order to train on MNIST images. We can look at their code and decipher what they're doing
+Deeper Dive:
+http://cs231n.github.io/convolutional-networks/
 
-```py
-
-model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3),
-                 activation='relu',
-                 input_shape=input_shape))
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-model.add(Flatten())
-model.add(Dense(128, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(num_classes, activation='softmax'))
-
-model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.Adadelta(),
-              metrics=['accuracy'])
-
-model.fit(x_train, y_train,
-          batch_size=batch_size,
-          epochs=epochs,
-          verbose=1,
-          validation_data=(x_test, y_test))
-score = model.evaluate(x_test, y_test, verbose=0)
-
-```
-
-Thanks to the lecture work done by Dr. Liang, I would hopefully not have to explain a lot of what the layers do. However, there are some things that would be helpful for me to explain. Hopefully, the preceding code would look familiar to you in a sense. 
-
-As you can see, it doesn't look much different from what we used to have in the last homework, just with a lot of new layers that are synonymous to ML.
-
-We start with the usual:
-Instantiate a serial model using:
-```py
-model = Sequential()
-```
-
-Now, instead of using Dense layers, we use 2D Convolution layers. 2D convolution layers actually take 3D arrays, much like the MNIST data found in the last homework (28 x 28 x 3).
-```py
-model.add(Conv2D(64, (3, 3), activation='relu'))
-```
-
-Much like what you have seen in class, a MaxPooling layer is also employed:
-```py
-model.add(MaxPooling2D())
-```
+Tutorials:
+* Classification: https://medium.com/nybles/create-your-first-image-recognition-classifier-using-cnn-keras-and-tensorflow-backend-6eaab98d14dd
+* Autoencoder: https://blog.keras.io/building-autoencoders-in-keras.html
 
 # Recurrent Neural Networks
 The biggest difference between Recurrent NN compared to CNNs is that they have "memory" of the past. So in addition to the inputs that they're given, they're also able to assess how the previous inputs could potentially affect the outcome. For the most part, they're most effective on data that rely on sequences, the simplest examples being text/speech data.
 
+Basics:
 https://hackernoon.com/rnn-or-recurrent-neural-network-for-noobs-a9afbb00e860
+
+Deeper Dive:
 http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+
+Tutorial:
+https://machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/
 
 # Generative Adversarial Networks 
 You will be using a GAN implementation for this homework.
-https://github.com/eriklindernoren/Keras-GAN/blob/master/gan/gan.py
+
+Basics:
 https://skymind.ai/wiki/generative-adversarial-network-gan
+
+Code example:
+https://github.com/eriklindernoren/Keras-GAN/blob/master/gan/gan.py
