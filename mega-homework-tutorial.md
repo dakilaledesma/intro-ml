@@ -34,15 +34,6 @@ Without Dropout | With Dropout
 As you can see, the images are a lot noisier. The simplest benefit to Dropout is that it allows the model to become more tolerant of errors. Adding this artificial noise actually allows it to learn from "worse" but still representative data. For example, if you were training on cat images and some of your cat images are partially covered by another object, a dropout model would be more tolerant, and more accurate, then a model without dropout. This is one of the Dropout's biggest benefits against overfitting as well.
 
 ## Tutorial
-### Pre-processing
-This tutorial will be more about how to pre-process your work, instead of why you'd want to. In the previous homework, I had this example.
-
-![thresholded strawberry leaf](https://i.imgur.com/rb9n4fM.png)
-
-Now, the question is how can we do something like this?
-
-Because we know that these images are basically turned into 3D arrays like in the last tutorial, where each MNIST digit image was just a 28 x 28 x 3 array per image, we can do this simply by setting certain pixels in the image to black, and retaining the green pixels that correspond to the strawberry leaf.
-
 ### Convolutional Neural Networks
 Instead of using Dense layers, such as ones that you found in the previous homeworks, instead, we're going to be using convolution layers. Convolutions are much better in attaining features on spatial based input such as images.
 
