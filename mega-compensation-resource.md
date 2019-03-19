@@ -7,12 +7,7 @@ Generally, a supervised convolutional neural network comprises of one or more co
 
 ### How do convolutional neural networks work?
 Instead of re-writing everything that I know, here is a fantastic resource (with images) on how CNNs work. The following is both a video and text resource, so if you'd rather read (or vice versa) then you can choose whatever you'd prefer.
-https://brohrer.github.io/how_convolutional_neural_networks_work.html
 
-### What does data look like when it propagates through the neural network?
-Probably the most helpful resource I can give you to visualize the effects of CNNs is just through this cool visualization:
-https://cs.stanford.edu/people/karpathy/convnetjs/demo/mnist.html
-I very much encourage you to look at the demo above, scrolling down into "network visualization."
 
 ### Dropout
 In this homework, in addition to our convolution layers (which will be explained below), we're going to be using a Dropout layer in addition to those convolution layers. 
@@ -35,14 +30,19 @@ As you can see, the images are a lot noisier. The simplest benefit to Dropout is
 ### Convolutional Neural Networks
 Instead of using Dense layers, such as ones that you found in the previous homeworks, instead, we're going to be using convolution layers. Convolutions are much better in attaining features on spatial based input such as images.
 * Basics:
-  * link
+  * https://brohrer.github.io/how_convolutional_neural_networks_work.html
 * Deeper Dive:
   * Stanford: http://cs231n.github.io/convolutional-networks/
 * Tutorials:
   * Classification: https://medium.com/nybles/create-your-first-image-recognition-classifier-using-cnn-keras-and-tensorflow-backend-6eaab98d14dd
   * Autoencoder: https://blog.keras.io/building-autoencoders-in-keras.html
+  
+#### What does data look like when it propagates through the neural network?
+Probably the most helpful resource I can give you to visualize the effects of CNNs is just through this cool visualization:
+https://cs.stanford.edu/people/karpathy/convnetjs/demo/mnist.html
+I very much encourage you to look at the demo above, scrolling down into "network visualization."
 
-# Recurrent Neural Networks
+### Recurrent Neural Networks
 The biggest difference between Recurrent NN compared to CNNs is that they have "memory" of the past. So in addition to the inputs that they're given, they're also able to assess how the previous inputs could potentially affect the outcome. For the most part, they're most effective on data that rely on sequences, the simplest examples being text/speech data.
 
 * Basics:
@@ -52,7 +52,7 @@ The biggest difference between Recurrent NN compared to CNNs is that they have "
 * Tutorial:
   * https://machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/
 
-# Generative Adversarial Networks 
+### Generative Adversarial Networks 
 You will be using a GAN implementation for this homework.
 
 * Basics:
