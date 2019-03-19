@@ -38,10 +38,9 @@ Instead of using Dense layers, such as ones that you found in the previous homew
   * link
 * Deeper Dive:
   * Stanford: http://cs231n.github.io/convolutional-networks/
-
-Tutorials:
-* Classification: https://medium.com/nybles/create-your-first-image-recognition-classifier-using-cnn-keras-and-tensorflow-backend-6eaab98d14dd
-* Autoencoder: https://blog.keras.io/building-autoencoders-in-keras.html
+* Tutorials:
+ * Classification: https://medium.com/nybles/create-your-first-image-recognition-classifier-using-cnn-keras-and-tensorflow-backend-6eaab98d14dd
+ * Autoencoder: https://blog.keras.io/building-autoencoders-in-keras.html
 
 # Recurrent Neural Networks
 The biggest difference between Recurrent NN compared to CNNs is that they have "memory" of the past. So in addition to the inputs that they're given, they're also able to assess how the previous inputs could potentially affect the outcome. For the most part, they're most effective on data that rely on sequences, the simplest examples being text/speech data.
