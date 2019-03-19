@@ -95,3 +95,4 @@ http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 # Generative Adversarial Networks 
 You will be using a GAN implementation for this homework.
 https://github.com/eriklindernoren/Keras-GAN/blob/master/gan/gan.py
+https://skymind.ai/wiki/generative-adversarial-network-gan
