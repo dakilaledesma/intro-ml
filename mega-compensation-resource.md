@@ -1,31 +1,6 @@
 # Compensation Resource
 My deep apologies.
 
-## Short Reading
-### What is a convolutional neural network?
-Generally, a supervised convolutional neural network comprises of one or more convolution layers added before a set of fully connected (Dense) layers for classification. Convolutions are in charge of taking features (feature extraction) and new representations of them in order to help the output. 
-
-### How do convolutional neural networks work?
-Instead of re-writing everything that I know, here is a fantastic resource (with images) on how CNNs work. The following is both a video and text resource, so if you'd rather read (or vice versa) then you can choose whatever you'd prefer.
-
-
-### Dropout
-In this homework, in addition to our convolution layers (which will be explained below), we're going to be using a Dropout layer in addition to those convolution layers. 
-
-#### What is dropout? 
-Simply put, Dropout is a way to reduce overfitting by "dropping out" a random set of neurons during training. This means that the connections to certain neurons are multiplied by 0, rending the connection for that epoch "useless."
-
-#### Why does this work? 
-If say, a neural network is stuck within a local minima, it allows the neural network to escape that local minima in hopes that it will find another minima closer to the global minima. In a sense, this makes the input "noisy," when a layer passes it's data onto the next with dropout, an input may look closer to the image on the right rather than the left:
-
-Without Dropout | With Dropout
------------- | -------------
-![normal_mnist](https://i.imgur.com/2ayEHKT.png?1) | ![noisy_mnist](https://i.imgur.com/gnmrCLO.png)
-
-<sub> taken w/o permission from: https://cs.stanford.edu/people/karpathy/convnetjs/mnist.png & https://csc.lsu.edu/~saikat/n-mnist/ </sub>
-
-As you can see, the images are a lot noisier. The simplest benefit to Dropout is that it allows the model to become more tolerant of errors. Adding this artificial noise actually allows it to learn from "worse" but still representative data. For example, if you were training on cat images and some of your cat images are partially covered by another object, a dropout model would be more tolerant, and more accurate, then a model without dropout. This is one of the Dropout's biggest benefits against overfitting as well.
-
 ## Tutorial Compensation
 ### Convolutional Neural Networks
 Instead of using Dense layers, such as ones that you found in the previous homeworks, instead, we're going to be using convolution layers. Convolutions are much better in attaining features on spatial based input such as images.
