@@ -200,7 +200,7 @@ autoencoder.fit(x_train_noisy, x_train,
                 validation_data=(x_test_noisy, x_test),
                 callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
 ```
-
+Here is your final code, it should look something like this:
 ```py
 from keras.datasets import mnist
 import numpy as np
