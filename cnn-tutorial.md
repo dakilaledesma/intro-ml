@@ -1,4 +1,9 @@
 # Convolutional Neural Networks
+
+## Cool visualization
+I'd like to start this off with a cool visualization of how data propagates through a simple ConvNet:
+https://cs.stanford.edu/people/karpathy/convnetjs/demo/mnist.html (scroll down to network visualization). You can see how the data changes as it passes through convolution layers as well as pooling layers, all the way down until it gets classified in a fully connected/dense layer. Pretty cool.
+
 ## Short Reading
 ### What is a convolutional neural network?
 Generally, a supervised convolutional neural network comprises of one or more convolution layers added before a set of fully connected (Dense) layers for classification. Convolutions are in charge of taking features (feature extraction) and new representations of them in order to help the output. 
@@ -23,7 +28,7 @@ Without Dropout | With Dropout
 ------------ | -------------
 ![normal_mnist](https://i.imgur.com/2ayEHKT.png?1) | ![noisy_mnist](https://i.imgur.com/gnmrCLO.png)
 
-<sub> taken w/o permission from: https://cs.stanford.edu/people/karpathy/convnetjs/mnist.png & https://csc.lsu.edu/~saikat/n-mnist/ </sub>
+<sub> above taken w/o permission from: https://cs.stanford.edu/people/karpathy/convnetjs/mnist.png & https://csc.lsu.edu/~saikat/n-mnist/ </sub>
 
 As you can see, the images are a lot noisier. The simplest benefit to Dropout is that it allows the model to become more tolerant of errors. Adding this artificial noise actually allows it to learn from "worse" but still representative data. For example, if you were training on cat images and some of your cat images are partially covered by another object, a dropout model would be more tolerant, and more accurate, then a model without dropout. This is one of the Dropout's biggest benefits against overfitting as well.
 
@@ -37,7 +42,7 @@ In addition to Dropout, various normalization techniques have become pertinent i
 In addition to using dropout, many convolutional neural networks employ what's called batch normalization. In the case of the image below, you can see that the NN is training on whether the image is a cat or not. However, you may notice that the cats on the left are always black, whilst the cats change color. Yet, in both cases, the model should output y=1.
 
 ![batchnorm](https://i.imgur.com/5FAPSgF.png)
-<sub> taken w/o permission from: https://www.youtube.com/watch?v=nUUqwaxLnWs </sub>
+<sub> above modified w/o permission from: https://www.youtube.com/watch?v=nUUqwaxLnWs </sub>
 
 To put it simply, this shift in color/data values causes a shift in the input distribution. If you trained your model on black cats but your input distribution changes (such as multi-colored cats), you may have to retrain your model. 
 
@@ -47,7 +52,7 @@ If you'd like more information on this, here's a link to a video of Andrew Ng's.
 
 https://www.youtube.com/watch?v=nUUqwaxLnWs
 
-### Deeper Dive
+## Deeper Dive
 If you would like to know more about convolutional neural networks than what is currently explained, here is a Stanford resource regarding convolutional neural networks in the context of computer vision:
 
 http://cs231n.github.io/convolutional-networks/
@@ -111,7 +116,7 @@ Straight from their paper:
 
 ![stylebank](https://i.imgur.com/L8DbLoO.png)
 
-<sub> taken w/o permission from https://github.com/jxcodetw/Stylebank </sub>
+<sub> above taken w/o permission from https://github.com/jxcodetw/Stylebank </sub>
 
 In this tutorial, we'll be using autoencoders for MNIST to do things like this:
 ![noisymnist](https://blog.keras.io/img/ae/denoised_digits.png)
