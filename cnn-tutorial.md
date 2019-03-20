@@ -10,7 +10,6 @@ https://brohrer.github.io/how_convolutional_neural_networks_work.html
 
 The link above has videos and images to help aid the explanation of this.
 
-
 ### Dropout
 In this homework, in addition to our convolution layers (which will be explained below), I would like to introduce a concept called Dropout.
 
@@ -31,7 +30,7 @@ As you can see, the images are a lot noisier. The simplest benefit to Dropout is
 ### Normalization
 In addition to Dropout, various normalization techniques have become pertinent in the accuracies of state-of-the-art models.
 
-#### Local-Response Normalization
+#### Local-Response Normalization (to-do)
 
 
 #### Batch normalization
@@ -40,7 +39,9 @@ In addition to using dropout, many convolutional neural networks employ what's c
 ![batchnorm](https://i.imgur.com/5FAPSgF.png)
 <sub> taken w/o permission from: https://www.youtube.com/watch?v=nUUqwaxLnWs </sub>
 
-To put it very simply, this shift in color causes what is known as covariate shift.
+To put it simply, this shift in color/data values causes a shift in the input distribution. If you trained your model on black cats but your input distribution changes (such as multi-colored cats), you may have to retrain your model. 
+
+Essentially, what batch normalization does is allows what data is propagating through the neural network to have the same mean and variance for each other, minimizing the range of shift that is found within the data.
 
 If you'd like more information on this, here's a link to a video of Andrew Ng's. Some of you may be familiar with him, he is an associate professor at Stanford who teaches a majority of the machine learning classes there:
 
@@ -54,4 +55,93 @@ http://cs231n.github.io/convolutional-networks/
 It's quite a long read, but <sub> it's written better than anything I'll be ever able to write (ngl) </sub>
 
 ## Tutorial
-From what you've seen in lectures, much of convolutional neural networks are comprised of 
+From what you've seen in lectures, much of convolutional neural networks are comprised of some defining features: convolutions, pooling, and a fully connected layer.
+
+### Classification tutorial (needs explaining)
+```py
+from keras.preprocessing.image import ImageDataGenerator
+
+idg = ImageDataGenerator()
+training_data = idg.flow_from_directory('dataset/train', target_size=(32, 32), batch_size=16, class_mode='binary')
+testing_data = idg.flow_from_directory('dataset/test', target_size=(32, 32), batch_size=16, class_mode='binary')
+
+model = Sequential()
+model.add(Conv2D(32, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=input_shape))
+model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+model.add(Flatten())
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(num_classes, activation='softmax'))
+
+model.compile(loss=keras.losses.categorical_crossentropy,
+              optimizer=keras.optimizers.Adadelta(),
+              metrics=['accuracy'])
+
+model.fit(x_train, y_train,
+          batch_size=batch_size,
+          epochs=epochs,
+          verbose=1,
+          validation_data=(x_test, y_test))
+```
+
+### Autoencoder tutorial (needs explaining)
+To build an autoencoder, you need three things: an encoding function, a decoding function, and a distance function between the amount of information loss between the compressed representation of your data and the decompressed representation (i.e. a "loss" function). The encoder and decoder will be chosen to be parametric functions (typically neural networks), and to be differentiable with respect to the distance function, so the parameters of the encoding/decoding functions can be optimize to minimize the reconstruction loss, using Stochastic Gradient Descent. It's simple! And you don't even need to understand any of these words to start using autoencoders in practice.
+
+Today two interesting practical applications of autoencoders are data denoising (which we feature later in this post), and dimensionality reduction for data visualization. With appropriate dimensionality and sparsity constraints, autoencoders can learn data projections that are more interesting than PCA or other basic techniques.
+
+We'll be using autoencoders for MNIST to do things like this:
+![noisymnist](https://blog.keras.io/img/ae/denoised_digits.png)
+
+```py
+from keras.datasets import mnist
+import numpy as np
+from keras.layers import Input, Dense, Conv2D, MaxPooling2D, UpSampling2D
+from keras.models import Model
+from keras import backend as K
+
+(x_train, _), (x_test, _) = mnist.load_data()
+
+x_train = x_train.astype('float32') / 255.
+x_test = x_test.astype('float32') / 255.
+x_train = np.reshape(x_train, (len(x_train), 28, 28, 1))  # adapt this if using `channels_first` image data format
+x_test = np.reshape(x_test, (len(x_test), 28, 28, 1))  # adapt this if using `channels_first` image data format
+
+noise_factor = 0.5
+x_train_noisy = x_train + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=x_train.shape) 
+x_test_noisy = x_test + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=x_test.shape) 
+
+x_train_noisy = np.clip(x_train_noisy, 0., 1.)
+x_test_noisy = np.clip(x_test_noisy, 0., 1.)
+
+input_img = Input(shape=(28, 28, 1))  # adapt this if using `channels_first` image data format
+
+x = Conv2D(16, (3, 3), activation='relu', padding='same')(input_img)
+x = MaxPooling2D((2, 2), padding='same')(x)
+x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+x = MaxPooling2D((2, 2), padding='same')(x)
+x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+encoded = MaxPooling2D((2, 2), padding='same')(x)
+
+# at this point the representation is (4, 4, 8) i.e. 128-dimensional
+
+x = Conv2D(8, (3, 3), activation='relu', padding='same')(encoded)
+x = UpSampling2D((2, 2))(x)
+x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+x = UpSampling2D((2, 2))(x)
+x = Conv2D(16, (3, 3), activation='relu')(x)
+x = UpSampling2D((2, 2))(x)
+decoded = Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x)
+
+autoencoder = Model(input_img, decoded)
+autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
+autoencoder.fit(x_train_noisy, x_train,
+                epochs=100,
+                batch_size=128,
+                shuffle=True,
+                validation_data=(x_test_noisy, x_test),
+                callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
+```
