@@ -143,6 +143,63 @@ from keras.models import Model
 from keras import backend as K
 from keras.callbacks import TensorBoard
 ```
+Next, we're going to be importing MNIST. You've seen this before.
+
+```py
+(x_train, _), (x_test, _) = mnist.load_data()
+
+x_train = x_train.astype('float32') / 255.
+x_test = x_test.astype('float32') / 255.
+x_train = np.reshape(x_train, (len(x_train), 28, 28, 1))  # adapt this if using `channels_first` image data format
+x_test = np.reshape(x_test, (len(x_test), 28, 28, 1))  # adapt this if using `channels_first` image data format
+```
+
+With the loaded data, we're going to impose some noise into the data. The reason why we add noise into the data *after* attaining the training images (instead of just getting noisy training images in the first place) is because we need a *ground truth*. Thus, the original image (which isn't noisy) is going to be are "label" or answer for our test array, and the exact same image but with noise artificially added upon it is going to be our training data. If we took noisy training images in the first place, we may not have a ground truth (the same exact image except without noise) for training the model.
+
+```py
+noise_factor = 0.5
+x_train_noisy = x_train + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=x_train.shape)
+x_test_noisy = x_test + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=x_test.shape)
+
+x_train_noisy = np.clip(x_train_noisy, 0., 1.)
+x_test_noisy = np.clip(x_test_noisy, 0., 1.)
+```
+
+Next, we're going to make an autoencoder. As I've said, an autoencoder generally has two parts: a encoding part and a decoding part. The simplest way to explain this encoding part is to extract features from the data into its essentials, essentially representing a large part of this image into a small thing.
+
+```py
+input_img = Input(shape=(28, 28, 1))  # adapt this if using `channels_first` image data format
+
+x = Conv2D(16, (3, 3), activation='relu', padding='same')(input_img)
+x = MaxPooling2D((2, 2), padding='same')(x)
+x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+x = MaxPooling2D((2, 2), padding='same')(x)
+x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+encoded = MaxPooling2D((2, 2), padding='same')(x)
+```
+
+Next, you have the decoding part. The decoder's job is to reconstruct what was encoded (or compressed) into something that looks like your ground truth/test data. 
+```py
+x = Conv2D(8, (3, 3), activation='relu', padding='same')(encoded)
+x = UpSampling2D((2, 2))(x)
+x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
+x = UpSampling2D((2, 2))(x)
+x = Conv2D(16, (3, 3), activation='relu')(x)
+x = UpSampling2D((2, 2))(x)
+decoded = Conv2D(1, (3, 3), activation='sigmoid', padding='same')(x)
+```
+
+Lastly, we compile the code. You've seen this before:
+```py
+autoencoder = Model(input_img, decoded)
+autoencoder.compile(optimizer='adadelta', loss='binary_crossentropy')
+autoencoder.fit(x_train_noisy, x_train,
+                epochs=100,
+                batch_size=128,
+                shuffle=True,
+                validation_data=(x_test_noisy, x_test),
+                callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
+```
 
 ```py
 from keras.datasets import mnist
