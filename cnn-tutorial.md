@@ -97,7 +97,7 @@ model.fit(training_data, testing_data,
           epochs=256)
 ```
 
-### Conv Autoencoder tutorial (needs explaining)
+### Conv Autoencoder tutorial (needs further explaining)
 An autoencoder can be split into three parts, the encoder and decoder. In an autoencoder, 'loss' is the computed reconstruction loss determined through the difference between your encoded representation (compressed) and your decoded representation (decompressed). 
 
 Today two interesting practical applications of autoencoders are data denoising (which we feature later in this post), and dimensionality reduction for data visualization. With appropriate dimensionality and sparsity constraints, autoencoders can learn data projections that are more interesting than PCA or other basic techniques.
