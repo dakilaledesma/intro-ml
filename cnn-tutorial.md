@@ -126,7 +126,7 @@ Say for example you have a double waveform seen, you may want to consider a 2D c
 An autoencoder is comprised of the usual: a convolution layer, a pooling layer, and some fully-connected/dense layer. In addition, we have an upsampling layer. Unlike in other convolutional neural networks, we aren't just trying to do feature extraction in order to infer some patterns within our data, such as through encoding in normal convolutional neural networks. We are also trying to re
 
 ### Code
-
+So, this is what you'll be needing to import.
 ```py
 from keras.datasets import mnist
 import numpy as np
@@ -186,3 +186,5 @@ autoencoder.fit(x_train_noisy, x_train,
                 validation_data=(x_test_noisy, x_test),
                 callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
 ```
+### Sources
+https://blog.keras.io/building-autoencoders-in-keras.html
