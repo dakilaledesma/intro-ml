@@ -119,9 +119,13 @@ Single Waveform | "Walking"
 ![singlewaveform](https://i.imgur.com/m9mVQSs.png) | ![movement](https://i.imgur.com/HTLcaSJ.gif)
 
 
-Say for example you have a double waveform seen, you may want to consider a 2D convolution instead. You can visualize the below as a a list of list of scalar values, such as [[2, 5], [4, 8], ...]. 
+Say for example you have a double waveform seen, you may want to consider a 2D convolution instead. You can visualize the below as a a list of list of scalar values, such as [[2, 5], [4, 8], ...]. Or, you can separate the two waveforms and train two separate 1D Convolution networks *if* the waveforms are highly divergent or have little correlation. You can tell when this happens if your neural network fails to optimize properly.
 
 ![doublewaveform](https://i.imgur.com/LMd8FdY.png)
+
+An autoencoder is comprised of the usual: a convolution layer, a pooling layer, and some fully-connected/dense layer. In addition, we have an upsampling layer. Unlike in other convolutional neural networks, we aren't just trying to do feature extraction in order to infer some patterns within our data, such as through encoding in normal convolutional neural networks. We are also trying to re
+
+### Code
 
 ```py
 from keras.datasets import mnist
