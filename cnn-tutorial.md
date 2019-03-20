@@ -102,7 +102,15 @@ An autoencoder can be split into three parts, the encoder and decoder. In an aut
 
 Today two interesting practical applications of autoencoders are data denoising (which we feature later in this post), and dimensionality reduction for data visualization. With appropriate dimensionality and sparsity constraints, autoencoders can learn data projections that are more interesting than PCA or other basic techniques.
 
-One of the most obvious uses for autoencoders is the denoising of data. The noisy data is encoded into a compressed form, and from this compressed from it must reconstruct a non-noisy image. In addition, being an unsupervised network, more complicated autoencoders have their own successes in the generation of data (such as for words/NLP) despite not being a recurrent neural network.
+With an autoencoder alone, one of the most obvious uses for autoencoders is the denoising of data. The noisy data is encoded into a compressed form, and from this compressed from it must reconstruct a non-noisy image using a non-noisy ground truth. In addition, being an unsupervised network, more complicated autoencoders have their own successes in the generation of data (such as for words/NLP) despite not being a recurrent neural network.
+
+Here's a cool example of what an autoencoder as part of a bigger model can do: generate a new image from an existing image in the style of some painting or other image. The paper and model is called StyleBank. You can find the paper here: https://arxiv.org/abs/1703.09210 and a Microsoft article here: https://www.microsoft.com/en-us/research/blog/ai-with-creative-eyes-amplifies-the-artistic-sense-of-everyone/
+
+Straight from their paper:
+*We propose StyleBank,  which is composed of multiple convolution filter banks and each filter bank explicitly represents one style, for neural image style transfer. To transfer an image to a specific style, the corresponding filter bank is operated on top of the intermediate feature embedding produced by a single auto-encoder.  The StyleBank and the auto-encoder are jointly learnt, where the learning is conducted in such a way that the auto-encoder does not encode any style information thanks to the flexibility introduced by the explicit filter bank representation.*
+
+![stylebank](https://i.imgur.com/L8DbLoO.png)
+<sub> taken w/o permission from https://github.com/jxcodetw/Stylebank </sub>
 
 In this tutorial, we'll be using autoencoders for MNIST to do things like this:
 ![noisymnist](https://blog.keras.io/img/ae/denoised_digits.png)
@@ -123,7 +131,7 @@ Say for example you have a double waveform seen, you may want to consider a 2D c
 
 ![doublewaveform](https://i.imgur.com/LMd8FdY.png)
 
-An autoencoder is comprised of the usual: a convolution layer, a pooling layer, and some fully-connected/dense layer. In addition, we have an upsampling layer. Unlike in other convolutional neural networks, we aren't just trying to do feature extraction in order to infer some patterns within our data, such as through encoding in normal convolutional neural networks. We are also trying to re
+A convolutional autoencoder is comprised of the usual: a convolution layer, a pooling layer, and some fully-connected/dense layer. In addition, we have an upsampling layer. Unlike in other convolutional neural networks, we aren't just trying to do feature extraction in order to infer some patterns within our data, such as through encoding in normal convolutional neural networks. We are also trying to re
 
 ### Code
 So, this is what you'll be needing to import.
