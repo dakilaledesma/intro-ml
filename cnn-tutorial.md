@@ -110,6 +110,7 @@ Straight from their paper:
 *We propose StyleBank,  which is composed of multiple convolution filter banks and each filter bank explicitly represents one style, for neural image style transfer. To transfer an image to a specific style, the corresponding filter bank is operated on top of the intermediate feature embedding produced by a single auto-encoder.  The StyleBank and the auto-encoder are jointly learnt, where the learning is conducted in such a way that the auto-encoder does not encode any style information thanks to the flexibility introduced by the explicit filter bank representation.*
 
 ![stylebank](https://i.imgur.com/L8DbLoO.png)
+
 <sub> taken w/o permission from https://github.com/jxcodetw/Stylebank </sub>
 
 In this tutorial, we'll be using autoencoders for MNIST to do things like this:
@@ -143,8 +144,8 @@ from keras.models import Model
 from keras import backend as K
 from keras.callbacks import TensorBoard
 ```
-Next, we're going to be importing MNIST. You've seen this before.
 
+Next, we're going to be importing MNIST. You've seen this before.
 ```py
 (x_train, _), (x_test, _) = mnist.load_data()
 
@@ -155,7 +156,6 @@ x_test = np.reshape(x_test, (len(x_test), 28, 28, 1))  # adapt this if using `ch
 ```
 
 With the loaded data, we're going to impose some noise into the data. The reason why we add noise into the data *after* attaining the training images (instead of just getting noisy training images in the first place) is because we need a *ground truth*. Thus, the original image (which isn't noisy) is going to be are "label" or answer for our test array, and the exact same image but with noise artificially added upon it is going to be our training data. If we took noisy training images in the first place, we may not have a ground truth (the same exact image except without noise) for training the model.
-
 ```py
 noise_factor = 0.5
 x_train_noisy = x_train + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=x_train.shape)
@@ -166,7 +166,6 @@ x_test_noisy = np.clip(x_test_noisy, 0., 1.)
 ```
 
 Next, we're going to make an autoencoder. As I've said, an autoencoder generally has two parts: a encoding part and a decoding part. The simplest way to explain this encoding part is to extract features from the data into its essentials, essentially representing a large part of this image into a small thing.
-
 ```py
 input_img = Input(shape=(28, 28, 1))  # adapt this if using `channels_first` image data format
 
@@ -200,6 +199,7 @@ autoencoder.fit(x_train_noisy, x_train,
                 validation_data=(x_test_noisy, x_test),
                 callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
 ```
+
 Here is your final code, it should look something like this:
 ```py
 from keras.datasets import mnist
