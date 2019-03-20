@@ -113,8 +113,12 @@ I know by now you all probably absolutely hate MNIST. However, this denoising ca
 Here is what you'll need to import. As you can see, we'll be using the usual layers for convolutional neural networks, such as Convolutions, MaxPooling, and Upsampling. Something you may note is the 2D distinction in what we're importing (Conv2D, MaxPooling2D, etc.). When using Keras for CNNs, it is important to take into account the dimensionality of your input and output. 
 
 Let's take this <sub> crudely drawn by me </sub> waveform below. If you're going to work on waveforms using CNNs for classification, then you'd want to use 1D convolutions. You can visualize the waveform below as a list of scalar values per waveform, such as [1, 3, 4, 8, 3, ...]. This is similar to classifying *just* the x-values of movement within motion of my foot moving back and forth for "walking" in the gif below.
-![singlewaveform](https://i.imgur.com/m9mVQSs.png)
-![movement](https://i.imgur.com/HTLcaSJ.gif)
+
+
+
+Single Waveform | "Walking"
+------------ | -------------
+![singlewaveform](https://i.imgur.com/m9mVQSs.png) | ![movement](https://i.imgur.com/HTLcaSJ.gif)
 
 Say for example you have a double waveform, you may want to consider a 2D convolution instead. You can visualize the below as a a list of list of scalar values, such as [[2, 5], [4, 8], ...]
 ![doublewaveform](https://i.imgur.com/LMd8FdY.png)
