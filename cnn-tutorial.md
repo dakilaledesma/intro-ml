@@ -94,7 +94,7 @@ model.fit(x_train, y_train,
           validation_data=(x_test, y_test))
 ```
 
-### Autoencoder tutorial (needs explaining)
+### Conv Autoencoder tutorial (needs explaining)
 An autoencoder can be split into three parts, the encoder and decoder. In an autoencoder, 'loss' is the computed reconstruction loss determined through the difference between your encoded representation (compressed) and your decoded representation (decompressed). 
 
 Today two interesting practical applications of autoencoders are data denoising (which we feature later in this post), and dimensionality reduction for data visualization. With appropriate dimensionality and sparsity constraints, autoencoders can learn data projections that are more interesting than PCA or other basic techniques.
@@ -104,6 +104,7 @@ One of the most obvious uses for autoencoders is the denoising of data. The nois
 We'll be using autoencoders for MNIST to do things like this:
 ![noisymnist](https://blog.keras.io/img/ae/denoised_digits.png)
 
+<sub> Code source: https://blog.keras.io/building-autoencoders-in-keras.html </sub>
 ```py
 from keras.datasets import mnist
 import numpy as np
