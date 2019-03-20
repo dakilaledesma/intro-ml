@@ -114,7 +114,7 @@ Here is what you'll need to import. As you can see, we'll be using the usual lay
 
 Let's take this <sub> crudely drawn by me </sub> waveform below. If you're going to work on waveforms using CNNs for classification, then you'd want to use 1D convolutions. You can visualize the waveform below as a list of scalar values per waveform, such as [1, 3, 4, 8, 3, ...]. This is similar to classifying *just* the x-values of movement within motion of my foot moving back and forth for "walking" in the gif below.
 ![singlewaveform](https://i.imgur.com/m9mVQSs.png)
-![movement](https://i.imgur.com/HTLcaSJ.gif]
+![movement](https://i.imgur.com/HTLcaSJ.gif)
 
 Say for example you have a double waveform, you may want to consider a 2D convolution instead. You can visualize the below as a a list of list of scalar values, such as [[2, 5], [4, 8], ...]
 ![doublewaveform](https://i.imgur.com/LMd8FdY.png)
