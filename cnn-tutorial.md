@@ -58,40 +58,43 @@ It's quite a long read, but <sub> it's written better than anything I'll be ever
 From what you've seen in lectures, much of convolutional neural networks are comprised of some defining features: convolutions, pooling, and a fully connected layer.
 
 ### Classification tutorial (needs explaining)
+Currently 
 ```py
 import keras
-from keras.datasets import mnist
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
-from keras import backend as K
 from keras.preprocessing.image import ImageDataGenerator
 
 idg = ImageDataGenerator()
-training_data = idg.flow_from_directory('dataset/train', target_size=(32, 32), batch_size=16, class_mode='binary')
-testing_data = idg.flow_from_directory('dataset/test', target_size=(32, 32), batch_size=16, class_mode='binary')
+training_data = idg.flow_from_directory('dataset/train',
+                                        target_size=(32, 32),
+                                        batch_size=16,
+                                        class_mode='binary')
+
+testing_data = idg.flow_from_directory('dataset/test',
+                                       target_size=(32, 32),
+                                       batch_size=16,
+                                       class_mode='binary')
 
 model = Sequential()
 model.add(Conv2D(32, kernel_size=(3, 3),
                  activation='relu',
-                 input_shape=input_shape))
-model.add(Conv2D(64, (3, 3), activation='relu'))
+                 input_shape=(32, 32)))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(num_classes, activation='softmax'))
+model.add(Dense(1, activation='softmax'))
 
 model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer=keras.optimizers.Adadelta(),
               metrics=['accuracy'])
 
-model.fit(x_train, y_train,
-          batch_size=batch_size,
-          epochs=epochs,
-          verbose=1,
-          validation_data=(x_test, y_test))
+model.fit(training_data, testing_data,
+          batch_size=16,
+          epochs=256)
 ```
 
 ### Conv Autoencoder tutorial (needs explaining)
