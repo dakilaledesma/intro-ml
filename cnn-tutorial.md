@@ -63,49 +63,178 @@ It's quite a long read, but <sub> it's written better than anything I'll be ever
 From what you've seen in lectures, much of convolutional neural networks are comprised of some defining features: convolutions, pooling, and a fully connected layer.
 
 ### Classification tutorial (needs explaining)
-Currently 
+Here is the essentials of what you'll need to classify a cat vs. a dog using a CNN. This is not dissimilar from what you've done using MLP, just with some few changes in the architecture. 
+
+You'll need to import these libraries. In addition, you'll want to install scipy as well as pillow through pip if you haven't already.
 ```py
 import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
-from keras.preprocessing.image import ImageDataGenerator
+import glob
+import numpy as np
+from scipy.misc import imresize
+from keras.preprocessing.image import img_to_array, load_img
+```
+Here, we're loading the images into arrays using img_to_array(). As you can see, I'm resizing the images to 64x64 using scipy's imresize(). This will be enough to classify cats and dogs, but use your own discretion when changing to different datasets. If your dataset has a lot of fine features (say, classifying the iris patterns of an eye), you may want to increase dimensionality. Don't go too crazy with the dimensionality however, as the number of parameters learn/train exponentially increase.
 
-idg = ImageDataGenerator()
-training_data = idg.flow_from_directory('dataset/train',
-                                        target_size=(32, 32),
-                                        batch_size=16,
-                                        class_mode='binary')
+As you may notice, we're using 0 for cat and 1 for dog.
+```py
+training_data = []
+labels = []
 
-testing_data = idg.flow_from_directory('dataset/test',
-                                       target_size=(32, 32),
-                                       batch_size=16,
-                                       class_mode='binary')
+for filepath in glob.iglob('dataset/train/Cat/*.jpg'):
+    img = load_img(filepath)
+    converted_img = img_to_array(img)
+    converted_img = imresize(converted_img, (64, 64, 3))
+    training_data.append(converted_img)
+    labels.append(0)
 
+for filepath in glob.iglob('dataset/train/Dog/*.jpg'):
+    img = load_img(filepath)
+    converted_img = img_to_array(img)
+    converted_img = imresize(converted_img, (64, 64, 3))
+    training_data.append(converted_img)
+    labels.append(1)
+```
+
+Next, we're formatting the data into the necessary dimensionality for a 2D convolution. The input must have four dimensions, and in this example they're respectively:
+* Number of images (len(labels), you may also use -1 or some iterator)
+  * Numpy distinguishes -1 as a "don't care" value, meaning that it will try to fit as many datapoints in the other dimensions (64x64x3) and however many samples can fit into the other dimensions replaces what -1 is.
+* Width of image (64, because of our imresize())
+* Height of image (64, because of our imresize())
+* Number of channels (3, because of RGB)
+
+In addition, we're defining each datapoint in our numpy array as float32 using astype(), and dividing it by 255 for a simple normalization.
+```py
+training_data = np.array(training_data)
+training_data = np.resize(training_data, (len(labels), 64, 64, 3))
+training_data = training_data.astype('float32') / 255.
+
+labels = np.array(labels)
+labels = keras.utils.to_categorical(labels, 2)
+
+```
+
+Now that our data is ready, let's define our convolutional neural network. As you can see, it comes with the essentials found in a typical convolutional neural network:
+* Convolution layers for feature extraction
+* MaxPooling for dimensionality reduction
+* Flatten layer for Dense layer
+* Dense layers for classification
+Other than that, the rest you've already seen in the MLP tutorial. 
+```py
 model = Sequential()
-model.add(Conv2D(32, kernel_size=(3, 3),
+model.add(Conv2D(64, kernel_size=(3, 3),
                  activation='relu',
-                 input_shape=(32, 32)))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-model.add(Flatten())
-model.add(Dense(128, activation='relu'))
-model.add(Dropout(0.5))
-model.add(Dense(1, activation='softmax'))
+                 input_shape=(64, 64, 3)))
 
-model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.Adadelta(),
+model.add(MaxPooling2D(pool_size=(3, 3), padding='same'))
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(Dropout(0.25))
+model.add(MaxPooling2D(pool_size=(3, 3), padding='same'))
+
+model.add(Flatten())
+model.add(Dense(256, activation='softmax'))
+model.add(Dense(2, activation='softmax'))
+
+model.compile(loss='mse',
+              optimizer='adam',
               metrics=['accuracy'])
 
-model.fit(training_data, testing_data,
-          batch_size=16,
+model.fit(training_data, labels,
+          batch_size=128,
           epochs=256)
 ```
 
-### Conv Autoencoder tutorial (needs further explaining)
-An autoencoder can be split into three parts, the encoder and decoder. In an autoencoder, 'loss' is the computed reconstruction loss determined through the difference between your encoded representation (compressed) and your decoded representation (decompressed). 
+```py
+import keras
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten
+from keras.layers import Conv2D, MaxPooling2D
+import glob
+import numpy as np
+from scipy.misc import imresize
+from keras.preprocessing.image import img_to_array, load_img
 
-Today two interesting practical applications of autoencoders are data denoising (which we feature later in this post), and dimensionality reduction for data visualization. With appropriate dimensionality and sparsity constraints, autoencoders can learn data projections that are more interesting than PCA or other basic techniques.
+training_data = []
+labels = []
+
+for filepath in glob.iglob('dataset/train/Cat/*.jpg'):
+    img = load_img(filepath)
+    converted_img = img_to_array(img)
+    converted_img = imresize(converted_img, (64, 64, 3))
+    training_data.append(converted_img)
+    labels.append(0)
+
+for filepath in glob.iglob('dataset/train/Dog/*.jpg'):
+    img = load_img(filepath)
+    converted_img = img_to_array(img)
+    converted_img = imresize(converted_img, (64, 64, 3))
+    training_data.append(converted_img)
+    labels.append(1)
+
+training_data = np.array(training_data)
+training_data = np.resize(training_data, (len(labels), 64, 64, 3))
+training_data = training_data.astype('float32') / 255.
+
+labels = np.array(labels)
+labels = keras.utils.to_categorical(labels, 2)
+
+model = Sequential()
+model.add(Conv2D(64, kernel_size=(3, 3),
+                 activation='relu',
+                 input_shape=(64, 64, 3)))
+
+model.add(MaxPooling2D(pool_size=(3, 3), padding='same'))
+model.add(Conv2D(32, (3, 3), activation='relu'))
+model.add(Dropout(0.25))
+model.add(MaxPooling2D(pool_size=(3, 3), padding='same'))
+
+model.add(Flatten())
+model.add(Dense(256, activation='softmax'))
+model.add(Dense(2, activation='softmax'))
+
+model.compile(loss='mse',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+model.fit(training_data, labels,
+          validation_data=[v_training_data, v_labels],
+          batch_size=128,
+          epochs=256)
+
+errors = 0
+num_images = 0
+
+for filepath in glob.iglob('dataset/test/Cat/*.jpg'):
+    img = load_img(filepath)
+    x = img_to_array(img)
+    x = imresize(x, (64, 64, 3))
+    x = np.resize(x, (1, 64, 64, 3))
+    x = x.astype('float32') / 255.
+    prediction = model.predict(x)[0]
+    num_images += 1
+    if max(prediction) != prediction[0]:
+        errors += 1
+
+for filepath in glob.iglob('dataset/test/Dog/*.jpg'):
+    img = load_img(filepath)
+    x = img_to_array(img)
+    x = imresize(x, (64, 64, 3))
+    x = np.resize(x, (1, 64, 64, 3))
+    x = x.astype('float32') / 255.
+    prediction = model.predict(x)[0]
+    num_images += 1
+    if max(prediction) != prediction[0]:
+        errors += 1
+
+print(F'Accuracy of prediction is {((num_images-errors)/num_images)*100}')
+```
+
+### Conv Autoencoder tutorial (needs further explaining)
+An autoencoder can be split into two parts, the encoder and decoder. In an autoencoder, 'loss' is the computed reconstruction loss determined through the difference between your encoded representation (compressed) and your decoded representation (decompressed). 
+
+Today two interesting practical applications of autoencoders are data denoising (which we feature later in this post), and dimensionality reduction for data visualization. With appropriate dimensionality and sparsity constraints, autoencoders can learn data projections that are more interesting than PCA or other basic techniques. [1]
 
 With an autoencoder alone, one of the most obvious uses for autoencoders is the denoising of data. The noisy data is encoded into a compressed form, and from this compressed from it must reconstruct a non-noisy image using a non-noisy ground truth. In addition, being an unsupervised network, more complicated autoencoders have their own successes in the generation of data (such as for words/NLP) despite not being a recurrent neural network.
 
@@ -257,4 +386,4 @@ autoencoder.fit(x_train_noisy, x_train,
                 callbacks=[TensorBoard(log_dir='/tmp/tb', histogram_freq=0, write_graph=False)])
 ```
 ### Sources
-https://blog.keras.io/building-autoencoders-in-keras.html
+1. https://blog.keras.io/building-autoencoders-in-keras.html
