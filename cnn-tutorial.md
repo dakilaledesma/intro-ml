@@ -65,10 +65,10 @@ From what you've seen in lectures, much of convolutional neural networks are com
 ### Classification tutorial (needs explaining)
 Here is the essentials of what you'll need to classify a cat vs. a dog using a CNN. This is not dissimilar from what you've done using MLP, just with some few changes in the architecture. 
 
-You'll need to import these libraries. In addition, you'll want to install scipy as well as pillow through pip if you haven't already.
+You'll need to import these libraries. In addition, you'll want to install scipy, pillow, and h5py through pip if you haven't already.
 ```py
 import keras
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 import glob
@@ -121,6 +121,7 @@ Now that our data is ready, let's define our convolutional neural network. As yo
 * MaxPooling for dimensionality reduction
 * Flatten layer for Dense layer
 * Dense layers for classification
+
 Other than that, the rest you've already seen in the MLP tutorial. 
 ```py
 model = Sequential()
@@ -146,6 +147,7 @@ model.fit(training_data, labels,
           epochs=256)
 ```
 
+Here is what you're final code should look like:
 ```py
 import keras
 from keras.models import Sequential
@@ -199,37 +201,20 @@ model.compile(loss='mse',
               metrics=['accuracy'])
 
 model.fit(training_data, labels,
-          validation_data=[v_training_data, v_labels],
           batch_size=128,
-          epochs=256)
-
-errors = 0
-num_images = 0
-
-for filepath in glob.iglob('dataset/test/Cat/*.jpg'):
-    img = load_img(filepath)
-    x = img_to_array(img)
-    x = imresize(x, (64, 64, 3))
-    x = np.resize(x, (1, 64, 64, 3))
-    x = x.astype('float32') / 255.
-    prediction = model.predict(x)[0]
-    num_images += 1
-    if max(prediction) != prediction[0]:
-        errors += 1
-
-for filepath in glob.iglob('dataset/test/Dog/*.jpg'):
-    img = load_img(filepath)
-    x = img_to_array(img)
-    x = imresize(x, (64, 64, 3))
-    x = np.resize(x, (1, 64, 64, 3))
-    x = x.astype('float32') / 255.
-    prediction = model.predict(x)[0]
-    num_images += 1
-    if max(prediction) != prediction[0]:
-        errors += 1
-
-print(F'Accuracy of prediction is {((num_images-errors)/num_images)*100}')
+          epochs=100)
 ```
+Lastly, let's save this model. In Keras, you can save a model to an .h5 file using save(). Just replace 'model' with whatever you ended up naming your model object.
+```py
+model.save('catsvdogs.h5')
+```
+
+When you want to load the trained model for prediction, you can use
+```py
+model = load_model('catsvdogs.h5')
+```
+
+Pretty easy!
 
 ### Conv Autoencoder tutorial (needs further explaining)
 An autoencoder can be split into two parts, the encoder and decoder. In an autoencoder, 'loss' is the computed reconstruction loss determined through the difference between your encoded representation (compressed) and your decoded representation (decompressed). 
