@@ -119,7 +119,7 @@ labels = keras.utils.to_categorical(labels, 2)
 Now that our data is ready, let's define our convolutional neural network. As you can see, it comes with the essentials found in a typical convolutional neural network:
 * Convolution layers for feature extraction
 * MaxPooling for dimensionality reduction
-* Flatten layer for Dense layer
+* Flatten layer to flatten the repesentations, to be classified by the Dense layer
 * Dense layers for classification
 
 Other than that, the rest you've already seen in the MLP tutorial. 
@@ -296,7 +296,7 @@ x = Conv2D(8, (3, 3), activation='relu', padding='same')(x)
 encoded = MaxPooling2D((2, 2), padding='same')(x)
 ```
 
-Next, you have the decoding part. The decoder's job is to reconstruct what was encoded (or compressed) into something that looks like your ground truth/test data. 
+Next, you have the decoding part. The decoder's job is to reconstruct what was encoded (or compressed) into something that looks like your ground truth/test data. Note the last convolution layer only has 1 node. That is representative of how many channels there are. If you're working on RGB, for example, use a Conv2D with 3 nodes.
 ```py
 x = Conv2D(8, (3, 3), activation='relu', padding='same')(encoded)
 x = UpSampling2D((2, 2))(x)
