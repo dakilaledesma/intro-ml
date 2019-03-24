@@ -284,7 +284,7 @@ x_train_noisy = np.clip(x_train_noisy, 0., 1.)
 x_test_noisy = np.clip(x_test_noisy, 0., 1.)
 ```
 
-Next, we're going to make an autoencoder. As I've said, an autoencoder generally has two parts: a encoding part and a decoding part. The simplest way to explain this encoding part is to extract features from the data into its essentials, essentially representing a large part of this image into a small thing.
+Next, we're going to make an autoencoder. As I've said, an autoencoder generally has two parts: a encoding part and a decoding part. The simplest way to explain this encoding part is to extract features from the data into its essentials, think of compressing data.
 ```py
 input_img = Input(shape=(28, 28, 1))  # adapt this if using `channels_first` image data format
 
