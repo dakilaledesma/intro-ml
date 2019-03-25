@@ -18,6 +18,7 @@ To help tie this into real world applications, there are papers that use some CN
 There are many applications of RNNs today, many of them in natural language processing (NLP). You have LSTM Autoencoders that handle sequence to sequence, and are sometimes used for language translation (sentence to sentence), language models or generative models to generate new words given context, etc.
 
 There is a pretty interesting generative model that is RNN based as well, from Google's DeepMind team: PixelRNN and PixelCNN.
+
 ![pixelrnncompletion](https://i.imgur.com/9DDBNVS.png)
 
 The Pixel models work by generating values *pixel by pixel* rather than a computation all at once. Thus, for image completion for example, it is important for the model to know what the previously generated pixels were before computing the next.
@@ -31,6 +32,7 @@ As what I believe what covered in class, because RNNs don't only consider curren
 
 ### LSTMs and GRUs
 Even then simple RNNs, such as:
+
 ![simplernnunit](https://i.imgur.com/AXlVa2q.png)
 
 <sub> image taken w/o permission from http://colah.github.io/posts/2015-08-Understanding-LSTMs/ </sub>
@@ -38,11 +40,13 @@ Even then simple RNNs, such as:
 aren't very good with data that have long-term dependencies, as it suffers from a vanishing or exploding gradient problem during BPTT. In fact, this is the reason why variations such as Long-Short Term Memory (LSTM) or Gated Recurrent Units (GRU) exist.
 
 In contrast, this is what an LSTM unit looks like:
+
 ![lstmunit](https://i.imgur.com/XPHFHe1.png)
 
 <sub> image taken w/o permission from http://colah.github.io/posts/2015-08-Understanding-LSTMs/ </sub>
 
 And this is what a GRU unit (a variation on the LSTM unit) looks like
+
 ![gruunit](https://i.imgur.com/ySa2X9N.png)
 
 <sub> image taken w/o permission from http://colah.github.io/posts/2015-08-Understanding-LSTMs/ </sub>
