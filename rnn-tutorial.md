@@ -17,11 +17,17 @@ To help tie this into real world applications, there are papers that use some CN
 
 There are many applications of RNNs today, many of them in natural language processing (NLP). You have LSTM Autoencoders that handle sequence to sequence, and are sometimes used for language translation (sentence to sentence), language models or generative models to generate new words given context, etc.
 
+There is a pretty interesting generative model that is RNN based as well, from Google's DeepMind team: PixelRNN and PixelCNN.
+[insert image of image completion from the paper here]
+
+The Pixel models work by generating values *pixel by pixel* rather than a computation all at once. Thus, for image completion for example, it is important for the model to know what the previously generated pixels were before computing the next.
+
 However, just because you have sequences does not mean you have to always use an RNN. You have to take into consideration how big of a time horizon you need to take into consideration. For example, if you're going to only predict over a very short time horizon, CNNs may still be used. If you're going to predict over a long time horizon, where long-term dependency is pretty important, then RNNs are a better idea.
 
 An example of this is text or word classification. Yes, a word is a sequence of letters, but just like how an image is a sequence of pixels, you are not trying to learn the temporal relations of each letter, but rather how the entire word looks ("at once"). Thus, there are a lot of models for word classification that are based on CNNs. RNNs, on the other hand, can be seen when whole sentences need to be generated, or translated. This is because each word's relation to each other has to be learnt. Thus, if your model needs to generate the next word in a sentence given the previous words, RNNs are the way to go.
 
-Even then RNNs aren't very good with data that have long-term dependencies. In fact, this is the reason why LSTM was created.
+### LSTMs and GRUs
+Even then RNNs aren't very good with data that have long-term dependencies. In fact, this is the reason variations of simple RNNs were created.
 
 LSTMs were created in order to fix this long-term dependency problem. They do this by allowing the modal neuron to have both a memory gate as well as a forget gate rather than a single layer. Because of their multi-layer repeating module, LSTMs are able to remember a lot more information than their simpler RNN counterparts (with a singular repeating module).
 
