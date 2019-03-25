@@ -18,7 +18,7 @@ To help tie this into real world applications, there are papers that use some CN
 There are many applications of RNNs today, many of them in natural language processing (NLP). You have LSTM Autoencoders that handle sequence to sequence, and are sometimes used for language translation (sentence to sentence), language models or generative models to generate new words given context, etc.
 
 There is a pretty interesting generative model that is RNN based as well, from Google's DeepMind team: PixelRNN and PixelCNN.
-[insert image of image completion from the paper here]
+![pixelrnncompletion](https://i.imgur.com/9DDBNVS.png)
 
 The Pixel models work by generating values *pixel by pixel* rather than a computation all at once. Thus, for image completion for example, it is important for the model to know what the previously generated pixels were before computing the next.
 
@@ -26,18 +26,31 @@ However, just because you have sequences does not mean you have to always use an
 
 An example of this is text or word classification. Yes, a word is a sequence of letters, but just like how an image is a sequence of pixels, you are not trying to learn the temporal relations of each letter, but rather how the entire word looks ("at once"). Thus, there are a lot of models for word classification that are based on CNNs. RNNs, on the other hand, can be seen when whole sentences need to be generated, or translated. This is because each word's relation to each other has to be learnt. Thus, if your model needs to generate the next word in a sentence given the previous words, RNNs are the way to go.
 
+### Backpropagation Through Time (BPTT)
+As what I believe what covered in class, because RNNs don't only consider current outputs but also previous outputs, backpropagation is also a little different in RNNs. The main difference between backpropagation in feed-forward neural networks and RNNs is that at each time step, the gradient weight W are summed up.
+
 ### LSTMs and GRUs
 Even then simple RNNs, such as:
+![simplernnunit](https://i.imgur.com/AXlVa2q.png)
 
+<sub> image taken w/o permission from http://colah.github.io/posts/2015-08-Understanding-LSTMs/ </sub>
 
-aren't very good with data that have long-term dependencies. This isIn fact, this is the reason variations of simple RNNs were created.
+aren't very good with data that have long-term dependencies, as it suffers from a vanishing or exploding gradient problem during BPTT. In fact, this is the reason why variations such as Long-Short Term Memory (LSTM) or Gated Recurrent Units (GRU) exist.
 
-LSTMs were created in order to fix this long-term dependency problem. They do this by allowing the modal neuron to have both a memory gate as well as a forget gate rather than a single layer. Because of their multi-layer repeating module, LSTMs are able to remember a lot more information than their simpler RNN counterparts (with a singular repeating module).
+In contrast, this is what an LSTM unit looks like:
+![lstmunit](https://i.imgur.com/XPHFHe1.png)
+
+<sub> image taken w/o permission from http://colah.github.io/posts/2015-08-Understanding-LSTMs/ </sub>
+
+And this is what a GRU unit (a variation on the LSTM unit) looks like
+![gruunit](https://i.imgur.com/ySa2X9N.png)
+
+<sub> image taken w/o permission from http://colah.github.io/posts/2015-08-Understanding-LSTMs/ </sub>
+
+LSTMs were created in order to fix this long-term dependency problem, by fixing the vainishing/exploding gradient problem. They do this by allowing the modal neuron to have both a memory gate as well as a forget gate rather than a single layer. Because of their multi-layer repeating module, LSTMs are able to remember a lot more information than their simpler RNN counterparts (with a singular repeating module).
 
 In addition, you may have heard of Gated Recurrent Units (GRUs) as well. GRUs are a variation on 
 
-### Backpropagation Through Time (BPTT)
-As what I believe what covered in class, because RNNs don't only consider current outputs but also previous outputs, backpropagation is also a little different in RNNs. The main difference between backpropagation in feed-forward neural networks and RNNs is that at each time step, the gradient weight W are summed up.
 
 ### LSTM Deeper Dive
 If you'd like to know more about RNNs and LSTM (specifically for MLP) this is a good, multipart resource into these models:
