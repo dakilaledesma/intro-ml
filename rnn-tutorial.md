@@ -27,7 +27,10 @@ However, just because you have sequences does not mean you have to always use an
 An example of this is text or word classification. Yes, a word is a sequence of letters, but just like how an image is a sequence of pixels, you are not trying to learn the temporal relations of each letter, but rather how the entire word looks ("at once"). Thus, there are a lot of models for word classification that are based on CNNs. RNNs, on the other hand, can be seen when whole sentences need to be generated, or translated. This is because each word's relation to each other has to be learnt. Thus, if your model needs to generate the next word in a sentence given the previous words, RNNs are the way to go.
 
 ### LSTMs and GRUs
-Even then RNNs aren't very good with data that have long-term dependencies. In fact, this is the reason variations of simple RNNs were created.
+Even then simple RNNs, such as:
+
+
+aren't very good with data that have long-term dependencies. This isIn fact, this is the reason variations of simple RNNs were created.
 
 LSTMs were created in order to fix this long-term dependency problem. They do this by allowing the modal neuron to have both a memory gate as well as a forget gate rather than a single layer. Because of their multi-layer repeating module, LSTMs are able to remember a lot more information than their simpler RNN counterparts (with a singular repeating module).
 
