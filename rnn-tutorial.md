@@ -73,7 +73,15 @@ http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduc
 Today, we're going to be getting a recurrent neural network to learn the relationships between each letter in the alphabet.
 
 ## Text Generator Tutorial (needs explanation probably)
-Code source and intuitional explanations: [1]
+This tutorial is handed off to another tutorial by Trung Tran. The objective is to generate text given a dataset, i.e.:
+![resultoftg](https://i.imgur.com/n1UhVVX.png)
+
+This was my result training on Alice in Wonderland after 13 Epochs. And as most of you may know, this *is* a sign of overfitting, as it is most likely memorizing words and regenerating them. However, through this tutorial I hope you can see that these types of things are possible.
+
+Code source and intuitional explanations are found at this person's GitHub. It is pretty well explained:
+https://chunml.github.io/ChunML.github.io/project/Creating-Text-Generator-Using-Recurrent-Neural-Network/
+
+The code had some missing lines and errors, so here is the full working code:
 ```py
 import numpy as np
 from keras.models import Sequential
