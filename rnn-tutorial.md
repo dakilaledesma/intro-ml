@@ -61,8 +61,7 @@ As seen from the above network, input going through an LSTM unit undergo a multi
 
 This is a pretty heavy summarization of what goes on in an LSTM layer, a slightly more indepth explanation with equations and all can be found here (which is also my images sources): http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
-
-In addition, you may have heard of Gated Recurrent Units (GRUs) as well. GRUs are a variation on 
+<GRU Explanation here> 
 
 
 ### LSTM Deeper Dive
