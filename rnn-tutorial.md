@@ -73,7 +73,7 @@ http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduc
 Today, we're going to be getting a recurrent neural network to learn the relationships between each letter in the alphabet.
 
 ## Text Generator Tutorial (needs explanation probably)
-
+Code source and intuitional explanations: [1]
 ```py
 import numpy as np
 from keras.models import Sequential
@@ -141,3 +141,5 @@ while True:
     if nb_epoch % 10 == 0:
         model.save_weights('checkpoint_{}_epoch_{}.hdf5'.format(HIDDEN_DIM, nb_epoch))
 ```
+## Sources
+1. https://chunml.github.io/ChunML.github.io/project/Creating-Text-Generator-Using-Recurrent-Neural-Network/
