@@ -69,7 +69,7 @@ If you'd like to know more about RNNs and LSTM (specifically for MLP) this is a 
 
 http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/ (this is part 1 of the series)
 
-## Letter Sequence Tutorial (undergoing code review)
+## Letter Sequence Tutorial
 This tutorial partially handed off to another tutorial by Jason Brownlee (many of you may have seen his tutorial before):
 https://machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/
 Unlike the harder homework below, I'm explaining here as there are a lot of things that I think he has left out, that is important to understanding how this code works.
