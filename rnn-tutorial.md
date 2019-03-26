@@ -288,6 +288,7 @@ for i in range(0, 5):
     print(int_to_char[seed[0]], "->", int_to_char[index])
     seed = [index]
 model.reset_states()
+```
 
 ## Text Generator Tutorial
 This tutorial is handed off to another tutorial by Trung Tran. The objective is to generate text given a dataset, i.e.:
