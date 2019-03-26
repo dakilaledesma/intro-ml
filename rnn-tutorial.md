@@ -70,7 +70,103 @@ If you'd like to know more about RNNs and LSTM (specifically for MLP) this is a 
 http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/ (this is part 1 of the series)
 
 ## Letter Sequence Tutorial (undergoing code review)
-Today, we're going to be getting a recurrent neural network to learn the relationships between each letter in the alphabet.
+This tutorial partially handed off to another tutorial by Jason Brownlee (many of you may have seen his tutorial before):
+https://machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/
+
+The objective with the code I've taken is to generate the next letter in the alphabet, given the current letter. Not only that, but the output of the next letter is fed again as input and the model has to predict the letter after that, etc.
+
+This sequence can be visualized as
+1. Start at A: Model prediction is B.
+2. Take previous prediction B: model predicts C.
+etc.
+
+However, if there is a mistake, such as:
+1. Start at A: Model prediction is C.
+2. Take previous prediction C: model predicts D
+etc.
+Then obviously the model did not learn the sequence correctly.
+
+From the above, here is our problem that we are posing for the neural network: the neural network needs to learn the inter-dependency of each letter. 
+
+Here is what you'll need to import:
+```py
+import numpy
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import LSTM
+from keras.utils import np_utils
+```
+
+```py
+# fix random seed for reproducibility
+numpy.random.seed(7)
+```
+
+Here, we are going to define the alphabet as one long string that we iterate through. In addition, we're doing the usual character to int (which you can do ord as well) as you've already learnt, NNs train on numbers.
+```py
+alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+char_to_int = dict((c, i) for i, c in enumerate(alphabet))
+int_to_char = dict((i, c) for i, c in enumerate(alphabet))
+```
+
+```py
+seq_length = 1
+dataX = []
+dataY = []
+
+for i in range(0, len(alphabet) - seq_length, 1):
+    seq_in = alphabet[i:i + seq_length]
+    seq_out = alphabet[i + seq_length]
+    dataX.append([char_to_int[char] for char in seq_in])
+    dataY.append(char_to_int[seq_out])
+    print(seq_in, '->', seq_out)
+
+
+X = numpy.reshape(dataX, (len(dataX), seq_length, 1))
+
+X = X / float(len(alphabet))
+y = np_utils.to_categorical(dataY)
+
+batch_size = 1
+model = Sequential()
+model.add(LSTM(50, batch_input_shape=(batch_size, X.shape[1], X.shape[2]), stateful=True))
+model.add(Dense(y.shape[1], activation='softmax'))
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+for i in range(300):
+    model.fit(X, y, epochs=1, batch_size=batch_size, verbose=2, shuffle=False)
+    model.reset_states()
+
+scores = model.evaluate(X, y, batch_size=batch_size, verbose=0)
+model.reset_states()
+
+print("Model Accuracy: %.2f%%" % (scores[1]*100))
+
+
+seed = [char_to_int[alphabet[0]]]
+for i in range(0, len(alphabet)-1):
+    x = numpy.reshape(seed, (1, len(seed), 1))
+    x = x / float(len(alphabet))
+    prediction = model.predict(x, verbose=0)
+    index = numpy.argmax(prediction)
+    print(int_to_char[seed[0]], "->", int_to_char[index])
+    seed = [index]
+model.reset_states()
+
+
+letter = "K"
+seed = [char_to_int[letter]]
+print("New start: ", letter)
+for i in range(0, 5):
+    x = numpy.reshape(seed, (1, len(seed), 1))
+    x = x / float(len(alphabet))
+    prediction = model.predict(x, verbose=0)
+    index = numpy.argmax(prediction)
+    print(int_to_char[seed[0]], "->", int_to_char[index])
+    seed = [index]
+model.reset_states()
+```
+
 
 ## Text Generator Tutorial (needs explanation probably)
 This tutorial is handed off to another tutorial by Trung Tran. The objective is to generate text given a dataset, i.e.:
