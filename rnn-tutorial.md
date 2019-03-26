@@ -72,6 +72,7 @@ http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduc
 ## Letter Sequence Tutorial (undergoing code review)
 This tutorial partially handed off to another tutorial by Jason Brownlee (many of you may have seen his tutorial before):
 https://machinelearningmastery.com/understanding-stateful-lstm-recurrent-neural-networks-python-keras/
+Unlike the harder homework below, I'm explaining here as there are a lot of things that I think he has left out, that is important to understanding how this code works.
 
 The objective with the code I've taken is to generate the next letter in the alphabet, given the current letter. Not only that, but the output of the next letter is fed again as input and the model has to predict the letter after that, etc.
 
@@ -155,9 +156,9 @@ The LSTM's hyperparameters are defined here as
 * Batch input shape (which is just (1, 1, 1))
 * Statefulness
 
-Statefulness may not be something that you're fully aware of in Keras. When a model is not stateful (stateful=False, which is default in Keras) in every sequence the cell states within the LSTM is *reset*. This means whatever state the LSTM achieved, it will not be propagated in the calculation of the next batch. On the other hand, if a model is stateful (stateful=True), then whatever state at index i will be used in the calculation of i + batch size.
+Statefulness is not something that we've cared about in Keras before, as statefulness does not matter in non-RNNs. When a model is not stateful (stateful=False, which is default in Keras) in every sequence the cell states within the LSTM is *reset*. This means whatever state the LSTM achieved, it will not be propagated in the calculation of the next batch. Therefore, all states are reset together after *each and every batch*. On the other hand, if a model is stateful (stateful=True), then whatever state at index i will be used in the calculation of i + batch size.
 
-This is why batch size is important in statefulness. It is because for whatever batch size that you end up setting, it will have to calculate not only what index to calculate next, but also compute the dimensionality of the states that need to be propagated to the next batch. That dimensionality is defined as the (batch size, output dimensionality).
+This is why batch size is important in statefulness. It is because for whatever batch size that you end up setting, it will have to calculate not only what index to calculate next, but also compute the dimensionality of the states that need to be propagated to the next batch. Because it is carried as input to the next calculation, its dimensionality has to be defined as it is considered an input shape. The structure that stores these states are of shape (batch size, output dimensionality).
 
 As we've said already, we're keeping it at 1 as we only want to learn a letter at a time.
 
@@ -169,7 +170,14 @@ model.add(Dense(y.shape[1], activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 ```
 
-The most important thing to note however, is how the model is trained. As you can see, every time we're training the model, we're also resetting the state of the model. This ensures that the model *actually learns the letter correlations between states*.
+Another big difference compared to previous neural networks is how the model is trained. As you can see, we're not doing a model.fit() with epochs=300, but instead a model.fit() inside a for loop with epochs=1. This is because we want to manually do something in between fit(), which is to reset_states().
+
+Before I explain the reset_states(), I want to talk about shuffle=False as it ties into the statefulness explained above.
+We don't want to shuffle samples in X. Why? Simply because our X is already structured sequentially from what is the truth. We want the model, between each state, to predict the letter at index i + 1 from the letter at index i. To summarize, the correlations between samples in X with index i and index i + 1 is lost when shuffling is allowed.
+
+Now you may think, "isn't this exactly what you've explained as stateful=False?" Not quite: Unlike stateful=False that resets states *after every batch*, model.reset_states() in our code below resets states *after every epoch of training*, as seen by the manual input of the line in the for loop. 
+
+You can think of it as if we do the LSTM(stateful=False), the states will be reset 25 times per epoch in the model.fit() below. However, because we're doing LSTM(stateful=True), the states will be reset *manually* through the line model.reset_states(). This ensures that the model learns the correlations *between each letter*, but when it comes to relearning the entire alphabet starting from A all the way to Z, it attains some a fresh start to states. Not completely accurate, but if it helps you remember, we're resettings states as we *don't* want to learn the correlations from sequence to sequence, but rather the correlations from character to character, which is why we resets the state.
 
 ```py
 for i in range(300):
@@ -182,6 +190,8 @@ model.reset_states()
 print("Model Accuracy: %.2f%%" % (scores[1]*100))
 ```
 
+Proof of model learning the alphabet
+
 ```py
 seed = [char_to_int[alphabet[0]]]
 for i in range(0, len(alphabet)-1):
@@ -193,6 +203,8 @@ for i in range(0, len(alphabet)-1):
     seed = [index]
 model.reset_states()
 ```
+
+Proof of model statefulness
 
 ```py
 letter = "K"
