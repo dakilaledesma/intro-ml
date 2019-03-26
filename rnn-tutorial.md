@@ -103,12 +103,15 @@ numpy.random.seed(7)
 ```
 
 Here, we are going to define the alphabet as one long string that we iterate through. In addition, we're doing the usual character to int (which you can do ord as well) as you've already learnt, NNs train on numbers.
+
 ```py
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 char_to_int = dict((c, i) for i, c in enumerate(alphabet))
 int_to_char = dict((i, c) for i, c in enumerate(alphabet))
 ```
+
+We're defining a sequence length of 1 as we're going to learn each letter *one by one* instead of learning, for example, 3 letters to predict the next one. In addition, you can see that for every character in your training array (dataX), the "label" character in the test array (dataY) is the next character in the sequence.
 
 ```py
 seq_length = 1
@@ -121,13 +124,30 @@ for i in range(0, len(alphabet) - seq_length, 1):
     dataX.append([char_to_int[char] for char in seq_in])
     dataY.append(char_to_int[seq_out])
     print(seq_in, '->', seq_out)
+```
 
+The important thing to note is that LSTM will take a 3-dimensional input, wherein one of the dimensions will take the amount of time steps within the data. As you can see by the next line, dataX is being reshaped to
 
+* The number of data samples there are (26)
+* The number of time steps there are (1, sequence length, as we're learning one character at a time
+    * This can be increased if you're trying to learn over multiple time steps. If you're trying to learn over 3 time steps, raise this to 3.
+* The number of features each data sample has (1, as a letter only has one scalar value to represent it)
+    * This can be increased if your data sample has multiple data points, such as if your data has height and width (2 features) over time. 
+
+```py
 X = numpy.reshape(dataX, (len(dataX), seq_length, 1))
+```
 
+Now we're going to do the usual normalization, so that values are between 0 and 1. In addition, we're going to do the usual one-hot encoding that I've talked about before. Take note that dataX and dataY have now been set to new variables X & y.
+
+```py
 X = X / float(len(alphabet))
 y = np_utils.to_categorical(dataY)
+```
 
+Again, batch size is equals to 1 as we don't want to generalize an output over multiple inputs, just 1. Defining the neural network is similar to what we've done in CNNs. Have an LSTM layer to extract temporal features within the data, and have a Dense layer that outputs the "classification." You can think of this classification as classifying the input into one out of 26 categories.
+
+```py
 batch_size = 1
 model = Sequential()
 model.add(LSTM(50, batch_input_shape=(batch_size, X.shape[1], X.shape[2]), stateful=True))
