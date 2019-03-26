@@ -145,7 +145,21 @@ X = X / float(len(alphabet))
 y = np_utils.to_categorical(dataY)
 ```
 
-Again, batch size is equals to 1 as we don't want to generalize an output over multiple inputs, just 1. Defining the neural network is similar to what we've done in CNNs. Have an LSTM layer to extract temporal features within the data, and have a Dense layer that outputs the "classification." You can think of this classification as classifying the input into one out of 26 categories.
+Again, batch size is equals to 1 as we don't want to generalize an output over multiple inputs, just 1. This is important to note as batch size plays an important role in how statefulness works in Keras.
+
+The rest of the layers are probably pretty intuitive at this point: LSTM layer to extract temporal features within the data, and have a Dense layer that outputs the "classification." You can think of this classification as classifying the input into one out of 26 categories.
+
+However, let's focus on the LSTM layer
+The LSTM's hyperparameters are defined here as
+* Number of nodes
+* Batch input shape (which is just (1, 1, 1))
+* Statefulness
+
+Statefulness may not be something that you're fully aware of in Keras. When a model is not stateful (stateful=False, which is default in Keras) in every sequence the cell states within the LSTM is *reset*. This means whatever state the LSTM achieved, it will not be propagated in the calculation of the next batch. On the other hand, if a model is stateful (stateful=True), then whatever state at index i will be used in the calculation of i + batch size.
+
+This is why batch size is important in statefulness. It is because for whatever batch size that you end up setting, it will have to calculate not only what index to calculate next, but also compute the dimensionality of the states that need to be propagated to the next batch. That dimensionality is defined as the (batch size, output dimensionality).
+
+As we've said already, we're keeping it at 1 as we only want to learn a letter at a time.
 
 ```py
 batch_size = 1
@@ -153,6 +167,11 @@ model = Sequential()
 model.add(LSTM(50, batch_input_shape=(batch_size, X.shape[1], X.shape[2]), stateful=True))
 model.add(Dense(y.shape[1], activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+```
+
+The most important thing to note however, is how the model is trained. As you can see, every time we're training the model, we're also resetting the state of the model. This ensures that the model *actually learns the letter correlations between states*.
+
+```py
 for i in range(300):
     model.fit(X, y, epochs=1, batch_size=batch_size, verbose=2, shuffle=False)
     model.reset_states()
@@ -161,8 +180,9 @@ scores = model.evaluate(X, y, batch_size=batch_size, verbose=0)
 model.reset_states()
 
 print("Model Accuracy: %.2f%%" % (scores[1]*100))
+```
 
-
+```py
 seed = [char_to_int[alphabet[0]]]
 for i in range(0, len(alphabet)-1):
     x = numpy.reshape(seed, (1, len(seed), 1))
@@ -172,8 +192,9 @@ for i in range(0, len(alphabet)-1):
     print(int_to_char[seed[0]], "->", int_to_char[index])
     seed = [index]
 model.reset_states()
+```
 
-
+```py
 letter = "K"
 seed = [char_to_int[letter]]
 print("New start: ", letter)
@@ -188,7 +209,7 @@ model.reset_states()
 ```
 
 
-## Text Generator Tutorial (needs explanation probably)
+## Text Generator Tutorial
 This tutorial is handed off to another tutorial by Trung Tran. The objective is to generate text given a dataset, i.e.:
 ![resultoftg](https://i.imgur.com/n1UhVVX.png)
 
