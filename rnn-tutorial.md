@@ -61,8 +61,6 @@ As seen from the above network, input going through an LSTM unit undergo a multi
 
 This is a pretty heavy summarization of what goes on in an LSTM layer, a slightly more indepth explanation with equations and all can be found here (which is also my images sources): http://colah.github.io/posts/2015-08-Understanding-LSTMs/
 
-<GRU Explanation here> 
-
 
 ### LSTM Deeper Dive
 If you'd like to know more about RNNs and LSTM (specifically for MLP) this is a good, multipart resource into these models:
@@ -156,9 +154,9 @@ The LSTM's hyperparameters are defined here as
 * Batch input shape (which is just (1, 1, 1))
 * Statefulness
 
-Statefulness is not something that we've cared about in Keras before, as statefulness does not matter in non-RNNs. When a model is not stateful (stateful=False, which is default in Keras) in every sequence the cell states within the LSTM is *reset*. This means whatever state the LSTM achieved, it will not be propagated in the calculation of the next batch. Therefore, all states are reset together after *each and every batch*. On the other hand, if a model is stateful (stateful=True), then whatever state at index i will be used in the calculation of i + batch size.
+Statefulness is not something that we've cared about in Keras before, as statefulness does not matter in non-RNNs. When a model is not stateful (stateful=False, which is default in Keras) in every sequence the cell states within the LSTM is *reset*. This means whatever state the LSTM achieved, it will not be propagated in the calculation of the next batch. Simply, all cell states in the node are reset together after *each and every batch calculation*. On the other hand, if a model is stateful (stateful=True), then whatever cell state is attained from computing at at index i will be used in the calculation of i + batch size.
 
-This is why batch size is important in statefulness. It is because for whatever batch size that you end up setting, it will have to calculate not only what index to calculate next, but also compute the dimensionality of the states that need to be propagated to the next batch. Because it is carried as input to the next calculation, its dimensionality has to be defined as it is considered an input shape. The structure that stores these states are of shape (batch size, output dimensionality).
+This is why batch size is important in statefulness. It is because for whatever batch size that you end up setting, it will have to calculate not only what index to calculate next, but also compute the dimensionality of the states that need to be propagated for the calculation of the *next batch*. Because it is carried as input to the next calculation, its dimensionality has to be defined as it is considered as part of the input shape. The structure that stores these states are of shape (batch size, output dimensionality).
 
 As we've said already, we're keeping it at 1 as we only want to learn a letter at a time.
 
@@ -173,11 +171,11 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 Another big difference compared to previous neural networks is how the model is trained. As you can see, we're not doing a model.fit() with epochs=300, but instead a model.fit() inside a for loop with epochs=1. This is because we want to manually do something in between fit(), which is to reset_states().
 
 Before I explain the reset_states(), I want to talk about shuffle=False as it ties into the statefulness explained above.
-We don't want to shuffle samples in X. Why? Simply because our X is already structured sequentially from what is the truth. We want the model, between each state, to predict the letter at index i + 1 from the letter at index i. To summarize, the correlations between samples in X with index i and index i + 1 is lost when shuffling is allowed.
+We don't want to shuffle samples in X. Why? Simply because our X is already structured sequentially from what is the truth. We want the model, between each batch, to predict the letter at index i + 1 from the letter at index i. To summarize, the correlations between samples in X with index i and index i + 1 are lost when shuffling of the samples happens.
 
-Now you may think, "isn't this exactly what you've explained as stateful=False?" Not quite: Unlike stateful=False that resets states *after every batch*, model.reset_states() in our code below resets states *after every epoch of training*, as seen by the manual input of the line in the for loop. 
+Now you may think, "isn't model.reset_states() in the below code exactly what you've explained as stateful=False?" Not quite: Unlike stateful=False that resets cell states *after every batch*, model.reset_states() in our code below resets states *after every epoch of training*, as seen by the manual input of the line in the for loop. 
 
-You can think of it as if we do the LSTM(stateful=False), the states will be reset 25 times per epoch in the model.fit() below. However, because we're doing LSTM(stateful=True), the states will be reset *manually* through the line model.reset_states(). This ensures that the model learns the correlations *between each letter*, but when it comes to relearning the entire alphabet starting from A all the way to Z, it attains some a fresh start to states. Not completely accurate, but if it helps you remember, we're resettings states as we *don't* want to learn the correlations from sequence to sequence, but rather the correlations from character to character, which is why we resets the state.
+You can think of it as if we do the LSTM(stateful=False), the states will be reset 25 times per epoch in the model.fit() below. However, because we're doing LSTM(stateful=True), the states will be reset *manually* through the line model.reset_states(). This ensures that the model learns the correlations *between each letter* in each epoch, but when it comes to relearning the entire alphabet starting from A all the way to Z, it attains some fresh, new cell states for optimization. Not completely accurate, but if it helps you remember, we're resettings states as we *don't* want to keep the correlations from sequence to sequence, but rather the correlations from character to character.
 
 ```py
 for i in range(300):
