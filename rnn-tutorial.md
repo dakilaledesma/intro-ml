@@ -53,6 +53,15 @@ And this is what a GRU unit (a variation on the LSTM unit) looks like
 
 LSTMs were created in order to fix this long-term dependency problem, by fixing the vainishing/exploding gradient problem. They do this by allowing the modal neuron to have both a memory gate as well as a forget gate rather than a single layer. Because of their multi-layer repeating module, LSTMs are able to remember a lot more information than their simpler RNN counterparts (with a singular repeating module).
 
+As seen from the above network, input going through an LSTM unit undergo a multistep process:
+1. First, a forget gate, that determines whether or not it wants to remember or forget some input on a scale of 0 to 1.
+2. Second, we decide which information to remember by the evaluation of candidate values
+3. Third, we update the old cell state with the new one.
+4. Lastly, we figure out what to output and output it.
+
+This is a pretty heavy summarization of what goes on in an LSTM layer, a slightly more indepth explanation with equations and all can be found here (which is also my images sources): http://colah.github.io/posts/2015-08-Understanding-LSTMs/
+
+
 In addition, you may have heard of Gated Recurrent Units (GRUs) as well. GRUs are a variation on 
 
 
@@ -61,12 +70,7 @@ If you'd like to know more about RNNs and LSTM (specifically for MLP) this is a 
 
 http://www.wildml.com/2015/09/recurrent-neural-networks-tutorial-part-1-introduction-to-rnns/ (this is part 1 of the series)
 
-## Letter Sequence Tutorial
+## Letter Sequence Tutorial (undergoing code review)
 Today, we're going to be getting a recurrent neural network to learn the relationships between each letter in the alphabet.
 
-## Text Generator Tutorial
-Because of how tardy I am in these tutorials, I am linking a tutorial about a text generator. Everything in this tutorial is well explained, and generally speaking if I made this tutorial I would be repeating the same things he has stated.
-
-I apologize if I'm being somewhat hypocritical (in that I don't like in when professors get their students to pick projects from the internet). 
-
-https://chunml.github.io/ChunML.github.io/project/Creating-Text-Generator-Using-Recurrent-Neural-Network/
+## Text Generator Tutorial (undergoing code review)
