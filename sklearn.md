@@ -143,5 +143,6 @@ plt.show()
 
 
 This is what you get:
+![MPL_Bar_Graph](images/mpl_bargraph1.PNG?raw=true "MatPlotLib Bar Graph")
 
 That should be all you need to do the assignment!
