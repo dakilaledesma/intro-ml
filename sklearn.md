@@ -24,10 +24,11 @@ for char in "ANYONE":
   string_to_ord.append(ord(char))
 print(string_to_ord)
 ```
+<sub> Code block 1: Changing letters into numbers using ```ord()``` </sub>
+
+
 Print output:
 ```[65, 78, 89, 79, 78, 69]```
-
-<sub> Code block 1: Changing letters into numbers using ```ord()``` </sub>
 
 You can think of the above code from letter to ```ord()``` number representation like this:
 
@@ -36,6 +37,7 @@ You can think of the above code from letter to ```ord()``` number representation
 |A|N|Y|O|N|E|
 
 <sub> Table 2: Letter to ```ord()``` visualization </sub>
+
 
 Now, when we make a two-dimensional array with the 6 words found in Table 1, it would look something like this:
 
@@ -52,6 +54,7 @@ training = [
 
 <sub> Code block 2: Two-dimensional array representation of the 6 words found in Table 1 </sub>
 
+
 As you can see, it's now a two-dimensional array. Six one-dimensional arrays representing the six words that we had, all contained in the training array. Now, making the  target array (the labels) is easy
 
 ```python
@@ -59,6 +62,7 @@ target = [0, 0, 0, 1, 1, 1] # English is 0, German is 1
 ```
 
 <sub> Code block 3 :Our one-dimensional target ("label"/"answers") array </sub>
+
 
 We also represented the labels in numbers. So when the model predicts 0, we know that it's English. When the model predicts 1, we know that it's German.
 
@@ -75,6 +79,7 @@ mlp_nn = MLPClassifier()
 ```
 
 <sub> Code block 4: Instantiating the models </sub>
+
 
 Now, we can train each of the models that we have with the data that we created using the ```fit()``` function:
 
@@ -104,6 +109,7 @@ print(mlp_nn.predict([[66, 196, 82, 71, 69, 84]])) # Output: 1 (German)
 
 <sub> Code block 5: Prediction using the trainined models </sub>
 
+
 Obviously, this is not very helpful as we're testing them on the same words they're being trained on. However, this should give you an idea of how to predict using the models you have trained.
 
 Lastly, let's make a very simple bar graph using matplotlib, which is the last part of your assignment.
@@ -132,6 +138,9 @@ plt.yticks(y_pos, labels)
 # Display the graph
 plt.show()
 ```
+
+<sub> Code block 5: Making a bar graph with predetermined values </sub>
+
 
 This is what you get:
 
