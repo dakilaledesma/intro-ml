@@ -26,8 +26,6 @@ Removing unnecessary data can be very beneficial for how your model performs. Th
 ## Part 2: Hyperparameters
 You may have noticed word “parameters” occasionally been thrown left and right in class (don’t quote me on that). While internal parameters are parameters that are set during training (such that their values change as the neural network trains), hyperparameters are parameters that are set before training. 
 
-In the tutorial homework 2, you may have noticed that I used a learning rate of 1 for the simple gradient descent optimizer I showed. Learning rate in this scenario is a hyperparameter, as it doesn’t change during training. In optimizers the have variable learning rate values during training, the initial learning rate value is also a hyperparameter, as it is set by you and while learning rate changes during training, the initial learning rate value doesn’t change.
-
 Some common hyperparameters you may encounter during coding:
 * Learning rate
 * Number of neurons per layer
