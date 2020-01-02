@@ -1,11 +1,9 @@
 # Assignment 2
 
 ## Table of Contents
-[Part 1: Pre-processing](#part-1-pre-processing)
-
-[Part 2: Hyperparameters](#part-2-hyperparameters)
-
-[Part 3: Homework Tutorial](#part-3-homework-tutorial)
+- [Part 1: Pre-processing](#part-1-pre-processing)
+- [Part 2: Hyperparameters](#part-2-hyperparameters)
+- [Part 3: Homework Tutorial](#part-3-homework-tutorial)
 
 ## Part 1: Pre-processing
 I’d like to emphasize a fundamental concept in data science: pre-processing.
