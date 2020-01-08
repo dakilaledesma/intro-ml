@@ -10,8 +10,8 @@ Only the following GPUs are supported:
   - Not sure what Nvidia graphics card you have? 
       - Go to your desktop, right click, and hit "NVIDIA Control Panel." A window should pop up.
       - On the top most toolbar go to Help -> System Information
-      - You should see your graphics card on the left white panel as seen here:
-
+      - You should see your graphics card in the window as underlined in red in this picture:
+      ![GPU_Info](images/gpu_info.png?raw=true "GPU System Information")
 
 ## Windows
 
@@ -20,7 +20,9 @@ Only the following GPUs are supported:
 3. Making an environment for this class is *highly* recommended, but may be skipped:
     - Enter ```conda create -n IntroML python==3.7``` to create a new environment. You will be asked to type ```y/n``` to confirm your changes.
     - Enter ```conda activate IntroML``` to activate the environment
-4. Proceed to Nvidia GPUs or AMD GPUs 
+4. Proceed to Nvidia GPUs or AMD GPUs
 
 ### Nvidia GPUs
-
+5. Install tensorflow-gpu using ```conda install tensorflow-gpu```
+6. Proceed 
+ 
