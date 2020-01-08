@@ -12,6 +12,10 @@ Only the following GPUs are supported:
       - On the top most toolbar go to Help -> System Information
       - You should see your graphics card in the window as underlined in red in this picture:
       ![GPU_Info](images/gpu_info.png?raw=true "GPU System Information")
+      
+      
+### Additional Information
+We will be allowing the use of *any* IDE or editor that you prefer for Python programming. Personally, I would recommend PyCharm, VSCode, or Atom. Do **NOT** use Jupyter Notebook for training or debugging! It is much, much slower for machine learning in both training and prediction. It is fine to use if you would like to show your **final** results.
 
 ## Windows (only NVIDIA GPUs supported)
 
