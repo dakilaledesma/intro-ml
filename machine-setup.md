@@ -34,6 +34,6 @@ We will be allowing the use of *any* IDE or editor that you prefer for Python pr
     - Enter ```conda create -n IntroML python==3.7``` to create a new environment. You will be asked to type ```y/n``` to confirm your changes.
     - Enter ```conda activate IntroML``` to activate the environment
 4. Proceed with these instructions depending on the brand of GPU you possess:
-    - **NVIDIA** Install the GPU version of TensorFlow using ```conda install tensorflow-gpu```
-    - **AMD** Install the official ROCm build through instructions found [here](https://rocm.github.io/tensorflow.html) (currently untested)
+    - **NVIDIA**: Install the GPU version of TensorFlow using ```conda install tensorflow-gpu```
+    - **AMD**: Install the official ROCm build through instructions found [here](https://rocm.github.io/tensorflow.html) (currently untested)
 5. Install the other Python libraries in the same terminal: ```pip install scikit-learn pillow talos```
