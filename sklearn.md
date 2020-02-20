@@ -1,7 +1,7 @@
 ## Assignment 1
 ### The very basics with Scikit-Learn
 
-We will be starting out very easy for the first assignment. As we progress through the course, projects will get harder and harder as we try to parse more complicated forms of information.
+We will be starting out very easy for the first assignment. As we progress through the course, both the types of models and processes associated with these models will get harder and harder as we try to parse more complicated forms of information.
 
 For now, let's take it easy: lets make some models that can determine what language a word is part of.
 
@@ -73,14 +73,14 @@ target = [
     1, # German   (BÄRGET)
     1, # German   (ZURUFE)
     1  # German   (WÜSTEM)
-    ]
+]
 ```
 
 <sub> Code block 3 :Our one-dimensional target ("label"/"answers") array </sub>
 
 As you can see, labels are also represented as numbers, in the same index as their respective training data value. So when the model predicts 0, we know that it's English. When the model predicts 1, we know that it's German.
 
-Now, let's import the models needed for this assignment, and instantiate them
+Now, let's import the models needed for this assignment, and instantiate them. We will be using sklearn, and sklearn is *incredibly* easy to use if you need simpler models tackling simpler, easily differentiatable data such as English vs. German words. On tougher data, your mileage may vary. 
 
 ```python
 from sklearn.neighbors import KNeighborsClassifier
