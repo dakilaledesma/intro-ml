@@ -1,7 +1,7 @@
 ## Assignment 1
 ### The very basics with Scikit-Learn
 
-In this tutorial, we will be classifying whther a given 6-letter word is English or German. First, let's get some training and target data. See this table:
+In this tutorial, we will be classifying whether a given 6-letter word is English or German. First, let's get some training and target data. See this table:
 
 | Training (often denoted as 'X') | Target (often denoted as 'y' |
 | ---- | ---- |
