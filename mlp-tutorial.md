@@ -90,13 +90,12 @@ For people who have experience coding using Keras, this may be a little differen
 Let's import what we need
 
 ```python
-import sys
 import talos
-import keras
-from keras import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.datasets import mnist
-from keras import backend
+import tensorflow as tf
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Flatten
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras import backend
 ```
 
 #### Dataset
@@ -274,13 +273,12 @@ talos.Scan(x_train, y_train, param_dict, my_model, x_val=x_test, y_val=y_test)
 
 Finally, your hyperparameter grid search code should look like this:
 ```python
-import sys
 import talos
-import keras
-from keras import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.datasets import mnist
-from keras import backend
+import tensorflow as tf
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Flatten
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras import backend
 
 p = {
     'units': [12, 24],
