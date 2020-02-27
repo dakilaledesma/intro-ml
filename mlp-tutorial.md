@@ -70,7 +70,7 @@ Again, this is not really accurate to what would actually happen to the data, bu
 
 ## Part 3: Homework Tutorial
 
-Okay, let's do some coding! We're going to be making an MLP neural network in Keras, and doing hyperparameter grid search using Talos. We aren't going to be doing pre-processing to our data today, but we will in the next homework.
+Okay, let's do some coding! We're going to be making an MLP neural network in Keras, and doing hyperparameter grid search using Talos. Additionally, we are going to be doing some very rudimentary pre-processing to our data today.
 
 ### Required library
 Before we start, please install talos. This is the library that we will be using in order to do hyperparameter grid search. It has a lot of features, such as plotting of neural network performance for each change of a hyperparamter. More information can be found here: [Talos](https://github.com/autonomio/talos)
@@ -102,7 +102,8 @@ from tensorflow.keras import backend
 
 We'll be using MNIST for our dataset. This is similar to homework 2, where the dataset is downloaded through the code itself (meaning you do not need to provide your own images or dataset). 
 
-Thus, let's go get the data (taken from the Keras example):
+Thus, let's go get the data (taken from the Keras example). Note how all of the values within images are being divided by 255. As many of you would know, the most common image formats store pixel values from a range of 0 to 255. Dividing this by 255 will allow the image ranges to be 0 - 1, which can be make-or-break some activation functions.
+
 ```python
 # the data, split between train and test sets
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
@@ -129,7 +130,7 @@ y_test = keras.utils.to_categorical(y_test, 10)
 
 ##### Making a model
 
-Now that we have our data, let's build a neural network using Keras. We're going to be making a serial model today, and the easiest way to do that in Keras is using Sequential().
+Now that we have our data, let's build a neural network using Keras. We're going to be making a serial model today, and the easiest way to do that in Keras is using ```Sequential()```.
 
 First, instantiate the model. We can call the Sequential that we imported:
 
@@ -139,7 +140,7 @@ model = Sequential()
 
 ##### Adding layers
 
-Using Sequential, you can easily add layers to the model by calling model.add(). Some examples of layers are
+Using Sequential, you can easily add layers to the model by calling ```model.add()```. Some examples of layers are
 * Dense (the simplest type of layer, essentially a neuron with a weight, bias, and activation attached)
 * LSTM (classified as an recurrent neural layer with memory for temporal data)
 * Conv2D (classified as a convolutional neural layer, in which CNNs excel in spatial data)
@@ -147,7 +148,7 @@ Using Sequential, you can easily add layers to the model by calling model.add().
 
 In this tutorial, we're going to be making an MLP neural network, the simplest kind. Thus, we will be adding a Dense layers in our neural network.
 
-Before we do that, let's add a Flatten() layer, as Dense can only take vectors/one-dimensional arrays. Right now, through the code we used to fetch and process the MNIST dataset, each image in the dataset is actually a 3D array of this format: (28, 28, 1), where
+Before we do that, let's add a ```Flatten()``` layer, as Dense can only take vectors/one-dimensional arrays. Right now, through the code we used to fetch and process the MNIST dataset, each image in the dataset is actually a 3D array of this format: (28, 28, 1), where
 * 28, - represents the row of pixels
 * 28, - represents the column of pixels
 * 1 - represents the single integer that denotes the luminosity of the pixel (0 for black, 255 for white, and gray in between)
@@ -157,11 +158,11 @@ The flatten layer just flattens this 3-dimensional array representing an image i
 ```python
 model.add(Flatten(input_shape=(28, 28, 1)))
 ```
-Inside our Flatten(), we add input_shape. input_shape is a parameter you need to set in the first layer that you add(). It should represent the shape that the training data has.
+Inside our ```Flatten()```, we add ```input_shape```. ```input_shape``` is a parameter you need to set in the first layer that you ```add()```. It should represent the shape that the training data has.
 
-Other layers found in Keras, such as Conv2D, can take a 3D array (2D for the row x column, 1D for the values). I will explain that more in-depth in the next homework. 
+Other layers found in Keras, such as ```Conv2D```, can take a 3D array (2D for the row x column, 1D for the values). I will explain that more in-depth in the next homework. 
 
-Now, let's add the Dense layers. Note that for every add() in a sequential model represents another layer in the neural network, with the last layer added being the output layer, and the first layer added being the input layer.
+Now, let's add the Dense layers. Note that for every ```add()``` in a sequential model represents another layer in the neural network, with the last layer added being the output layer, and the first layer added being the input layer.
 
 ```python
 model.add(Dense(units=24, activation='softmax'))
@@ -175,7 +176,7 @@ Where:
 
 ##### Compiling and fitting your model
 
-After adding all of your desired layers, let's compile the model using model.compile().
+After adding all of your desired layers, let's compile the model using ```model.compile()```.
 ```python
 model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
 ```
@@ -184,7 +185,7 @@ Where:
 * Optimizer represents the optimizer used by the model
 * Metrics specifies the metrics
 
-Lastly, let's fit our training and testing data into the model we compiled using model.fit().
+Lastly, let's fit our training and testing data into the model we compiled using ```model.fit()```.
 ```python
 out = model.fit(x=x_train, y=y_train, batch_size=2000, epochs=100, verbose=0)
 ```
@@ -338,10 +339,10 @@ def my_model(x_train, y_train, x_val, y_val, params):
 # Will not output anything but will create a .csv file when done.
 talos.Scan(x_train, y_train, p, my_model, x_val=x_test, y_val=y_test)
 ```
-Go ahead and run that code to train it! **Note: if you want to see the per-epoch updates like in the previous homework, change verbose in model.fit() from 0 to 1**
+Go ahead and run that code to train it! **Note: if you want to see the per-epoch updates like in the previous homework, change verbose in ```model.fit()``` from 0 to 1**
 
 #### Viewing the .csv
-As you may have noticed, after Scan() runs, it generates a '.csv' file found in your working directory. Now, we can open into a Jupyter notebook (if you're not in a jupyter notebook already), and run the following code (change 'yourfile.csv' to the name of your .csv file):
+As you may have noticed, after ```Scan()``` runs, it generates a '.csv' file found in your working directory. Now, we can open into a Jupyter notebook (if you're not in a jupyter notebook already), and run the following code (change 'yourfile.csv' to the name of your .csv file):
 
 ```python
 %matplotlib inline
