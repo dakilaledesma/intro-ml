@@ -142,9 +142,9 @@ model = Sequential()
 
 Using Sequential, you can easily add layers to the model by calling ```model.add()```. Some examples of layers are
 * Dense (the simplest type of layer, essentially a neuron with a weight, bias, and activation attached)
-* LSTM (classified as an recurrent neural layer with memory for temporal data)
+* LSTM (classified as a recurrent neural layer with memory for temporal data)
 * Conv2D (classified as a convolutional neural layer, in which CNNs excel in spatial data)
-* MaxPooling (commonly used in CNNs)
+* MaxPooling (commonly used in CNNs for dimensionality reduction and translational invariance purposes)
 
 In this tutorial, we're going to be making an MLP neural network, the simplest kind. Thus, we will be adding a Dense layers in our neural network.
 
