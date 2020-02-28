@@ -348,10 +348,11 @@ As you may have noticed, after ```Scan()``` runs, it generates a '.csv' file fou
 %matplotlib inline
 import talos
 import matplotlib.pyplot as plt
+from glob import glob
 r = talos.Reporting('yourfile.csv')
-r.table()
+r.table("accuracy")
 ```
-Running this code in a notebook, you should be able to see the different combinations of hyperparameters and their respective validation accuracy (val_acc):
+Running this code in a notebook, you should be able to see the different combinations of hyperparameters with entries sorted by their respective accuracy:
 
 ![table](https://i.imgur.com/2iL33qP.png)
 
