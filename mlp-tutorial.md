@@ -122,10 +122,29 @@ x_test = x_test.astype('float32')
 x_train /= 255
 x_test /= 255
 
+```
+
+To create the label data, they make a binary classification matrix:
+```python
 # convert class vectors to binary class matrices
 y_train = keras.utils.to_categorical(y_train, 10)
 y_test = keras.utils.to_categorical(y_test, 10)
 ```
+
+Essentially, this changes how the label data is formatted. Why is this important? Lets say that the digit in question is a 6.
+A ```to_categorical``` representation of this label would be:
+[0, 0, 0, 0, 0, 0, 1, 0, 0, 0]
+where at index 6 is a ```1```, while all other indices are a ```0```.
+
+Note that, when using to_categorical, **the amount of nodes/dimensionality of your output layer must equal the length of the label array**. As such, the above label is of length 10, and as such we need 10 output nodes (for this homework).
+
+Why would we use this? This is actually really helpful rather than using scalar variables like what we did in the last assignment. Not only does it increase accuracy, but given certain activation functions for your output layer, can allow for *probabilities* for the output.
+
+Lets say that a trained model is predicting a 6. The output may look something like this:
+[0.15, 0, 0, 0.10, 0, 0.10, 0.55, 0, 0.10, 0]
+
+The prediction would still be 6, as it has a probability of 55%, but we can also see the probability of predictions that it is making. This is something not possible with scalar representations for labels.
+
 #### Building the neural network
 
 ##### Making a model
